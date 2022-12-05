@@ -1,0 +1,33 @@
+[workspace]
+members = [
+    "utils/macros-lib",
+    "utils/macros-impl",
+    "utils/macros-decl",
+    "utils/criterion-utils",
+    "utils/error-utils",
+    "utils/logging-allocator",
+    "utils/mmap-vec",
+    "algebra/u256",
+    "algebra/primefield",
+    "algebra/elliptic-curve",
+    "crypto/hash",
+    "crypto/merkle-tree",
+    "crypto/elliptic-curve-crypto",
+    "crypto/stark",
+]
+
+# TODO: Not all of the workspace would need to be published.
+# See https://github.com/rust-lang/rfcs/pull/2224
+
+[profile.release]
+opt-level = 3
+lto = 'thin'
+
+# Doing light optimizations helps test performance more than it hurts build time.
+[profile.test]
+opt-level = 2
+
+# Compilation profile for any non-workspace member.
+# We want OpenZKP to always be build optimized, otherwise tests will run very slow.
+[profile.dev.package."*"]
+opt-level = 3
