@@ -14,6 +14,7 @@ members = [
     "crypto/merkle-tree",
     "crypto/elliptic-curve-crypto",
     "crypto/stark",
+    "mips"
 ]
 
 # TODO: Not all of the workspace would need to be published.
