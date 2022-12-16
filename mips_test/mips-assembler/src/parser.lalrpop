@@ -1,0 +1,289 @@
+use crate::ast::*;
+use either::Either;
+use mips_types::constants::{BCOND_RT_BGEZ, BCOND_RT_BGEZAL, BCOND_RT_BLTZ, BCOND_RT_BLTZAL};
+use std::str::FromStr;
+
+grammar;
+
+Comma<T>: Vec<T> = <mut items:(<T> ",")*> <last:T?> => {
+    items.extend(last);
+    items
+};
+
+Spanned<T>: Spanned<T> = <l:@L> <data:T> <r:@R> => Spanned { data, span: (l, r) };
+
+pub Program: Program = <items:("\n"* <Item>)*> "\n"* => Program { items };
+
+Item: Item = {
+    <ConstantDef> "\n" => Item::ConstantDef(<>),
+    <Directive> "\n" => Item::Directive(<>),
+    <Identifier> ":" => Item::Label(<>),
+    <Instruction> "\n" => Item::Instruction(<>),
+};
+
+Expr: Expr = {
+    #[precedence(level = "1")]
+    Spanned<Number> => <>.map(ExprData::Number),
+    #[precedence(level = "1")]
+    Spanned<Identifier> => <>.map(ExprData::Constant),
+    #[precedence(level = "1")]
+    "(" <Expr> ")",
+    #[precedence(level = "1")]
+    <l:@L> "-" <expr:Expr>
+        => Expr::new((l, expr.span.1), ExprData::Negated(Box::new(expr))),
+    #[precedence(level = "1")]
+    <l:@L> "~" <expr:Expr>
+        => Expr::new((l, expr.span.1), ExprData::BitwiseNegated(Box::new(expr))),
+
+    #[precedence(level = "2")]
+    #[assoc(side = "left")]
+    <left:Expr> <operation:ExprOperation2> <right:Expr> => Expr::calculated(operation, left, right),
+
+    #[precedence(level = "3")]
+    #[assoc(side = "left")]
+    <left:Expr> <operation:ExprOperation3> <right:Expr> => Expr::calculated(operation, left, right),
+
+    #[precedence(level = "4")]
+    #[assoc(side = "left")]
+    <left:Expr> <operation:ExprOperation4> <right:Expr> => Expr::calculated(operation, left, right),
+
+    #[precedence(level = "5")]
+    #[assoc(side = "left")]
+    <left:Expr> "&" <right:Expr> => Expr::calculated(Operation::BitwiseAnd, left, right),
+
+    #[precedence(level = "6")]
+    #[assoc(side = "left")]
+    <left:Expr> "^" <right:Expr> => Expr::calculated(Operation::BitwiseXor, left, right),
+
+    #[precedence(level = "7")]
+    #[assoc(side = "left")]
+    <left:Expr> "|" <right:Expr> => Expr::calculated(Operation::BitwiseOr, left, right),
+};
+
+ExprOperation2: Operation = {
+    "*" => Operation::Multiply,
+    "/" => Operation::Divide,
+};
+
+ExprOperation3: Operation = {
+    "+" => Operation::Add,
+    "-" => Operation::Subtract,
+};
+
+ExprOperation4: Operation = {
+    ">>" => Operation::BitwiseShiftRight,
+    "<<" => Operation::BitwiseShiftLeft
+};
+
+RepeatedExpr: RepeatedExpr = <expr:Expr> <times:(":" <Expr>)?>
+    => RepeatedExpr { expr, times: times.unwrap_or_else(|| ExprData::Number(1).into()) };
+
+Number: i64 = {
+    r"[0-9]+" => i64::from_str(<>).unwrap(),
+    r"0x[0-9a-zA-Z]+" => i64::from_str_radix(&<>[2..], 16).unwrap(),
+};
+
+Identifier: String = r"[a-zA-Z_][a-zA-Z_0-9]*" => <>.to_string();
+
+String: String = r#""([^\\"]|\\.)*""# => {
+    let s = <>;
+    s[1..s.len()-1].to_string()
+};
+
+ConstantDef: ConstantDef = <name:Identifier> "=" <value:Expr> => ConstantDef { name, value };
+
+Directive: Directive = {
+    ".text" => Directive::Text,
+    ".globl" <label:Identifier> => Directive::Global { label },
+    ".data" => Directive::Data,
+    ".rdata" => Directive::RData,
+    ".sdata" => Directive::SData,
+    ".align" <boundary:Expr> => Directive::Align { boundary },
+    ".space" <size:Expr> => Directive::Space { size },
+    ".byte" <values:Comma<RepeatedExpr>> => Directive::NumberDirective { ty: NumberDirective::Byte, values },
+    ".half" <values:Comma<RepeatedExpr>> => Directive::NumberDirective { ty: NumberDirective::Half, values },
+    ".word" <values:Comma<RepeatedExpr>> => Directive::NumberDirective { ty: NumberDirective::Word, values },
+    ".ascii" <string:String> => Directive::Ascii { string, zero_pad: false },
+    ".asciiz" <string:String> => Directive::Ascii { string, zero_pad: true },
+};
+
+Instruction: Instruction = {
+    <op_code:RTypeOpRdRsRt> <rd:Register> "," <rs:Register> "," <rt:Register>
+        => Instruction::RType { op_code, rd, rs, rt, shift: ExprData::Number(0).into() },
+    <op_code:RTypeOpRdRtRs> <rd:Register> "," <rt:Register> "," <rs:Register>
+        => Instruction::RType { op_code, rd, rs, rt, shift: ExprData::Number(0).into() },
+    <op_code:RTypeOpRdRtSh> <rd:Register> "," <rt:Register> "," <shift:Expr>
+        => Instruction::RType { op_code, rd, rs: Register::Number(0), rt, shift },
+    <op_code:RTypeOpRsRt> <rs:Register> "," <rt:Register>
+        => Instruction::RType { op_code, rd: Register::Number(0), rs, rt, shift: ExprData::Number(0).into() },
+    <op_code:RTypeOpRs> <rs:Register>
+        => Instruction::RType { op_code, rs, rd: Register::Number(0), rt: Register::Number(0), shift: ExprData::Number(0).into() },
+    "jalr" <rs:Register>
+        => Instruction::RType {
+            op_code: RTypeOp::Jalr, rs, rd: Register::Number(31),
+            rt: Register::Number(0), shift: ExprData::Number(0).into()
+        },
+    <op_code:RTypeOpRd> <rd:Register>
+        => Instruction::RType { op_code, rs: Register::Number(0), rd, rt: Register::Number(0), shift: ExprData::Number(0).into() },
+    <op_code:ITypeOpRtRs> <rt:Register> "," <rs:Register> "," <immediate:Expr>
+        => Instruction::IType { op_code, rt, rs, immediate },
+    <op_code:ITypeOpRsRt> <rs:Register> "," <rt:Register> "," <immediate:Expr>
+        => Instruction::IType { op_code, rs, rt, immediate },
+    <op_data:ITypeOpRs> <rs:Register> "," <immediate:Expr>
+        => Instruction::IType { op_code: op_data.0, rs, rt: Register::Number(op_data.1), immediate },
+    <op_code:StorageITypeOp> <rt:Register> "," <immediate:Expr> "(" <rs:Register> ")"
+        => Instruction::IType { op_code, rs, rt, immediate },
+    <op_code:JTypeOp> <label:Expr>
+        => Instruction::JType { op_code, label },
+    "syscall" => Instruction::RType {
+        op_code: RTypeOp::Syscall,
+        rd: Register::Number(0),
+        rs: Register::Number(0),
+        rt: Register::Number(0),
+        shift: ExprData::Number(0).into()
+    },
+    "break" <code:Expr?> => Instruction::RType {
+        op_code: RTypeOp::Break,
+        rd: Register::Number(0),
+        rs: Register::Number(0),
+        rt: Register::Number(0),
+        // Store the break code in shift temporarily.
+        // It will be resolved during the lowering to IR.
+        shift: code.unwrap_or_else(|| ExprData::Number(0).into())
+    },
+    r"noop|nop" => Instruction::noop(),
+    PseudoInstruction => Instruction::Pseudo(<>),
+};
+
+PseudoInstruction: PseudoInstruction = {
+    "li" <rd:Register> "," <value:Expr> => PseudoInstruction::LoadImmediate { rd, value },
+    "la" <rd:Register> "," <label:Expr> => PseudoInstruction::LoadAddress { rd, label },
+    "move" <rt:Register> "," <rs:Register> => PseudoInstruction::Move { rt, rs },
+    "mul" <rd:Register> "," <rs:Register> "," <rt:Register> => PseudoInstruction::Mul { rd, rs, rt: Either::Left(rt) },
+    "mul" <rd:Register> "," <rs:Register> "," <rt:Expr> => PseudoInstruction::Mul { rd, rs, rt: Either::Right(rt) },
+    "div" <rd:Register> "," <rs:Register> "," <rt:Register> => PseudoInstruction::Div { rd, rs, rt: Either::Left(rt) },
+    "div" <rd:Register> "," <rs:Register> "," <rt:Expr> => PseudoInstruction::Div { rd, rs, rt: Either::Right(rt) },
+    "rem" <rd:Register> "," <rs:Register> "," <rt:Register> => PseudoInstruction::Rem { rd, rs, rt: Either::Left(rt) },
+    "rem" <rd:Register> "," <rs:Register> "," <rt:Expr> => PseudoInstruction::Rem { rd, rs, rt: Either::Right(rt) },
+    "not" <rd:Register> "," <rs:Register> => PseudoInstruction::Not { rd, rs },
+    <op_code:StorageITypeOp> <rt:Register> "," <label:Identifier> => PseudoInstruction::LabelStorage { op_code, rt, label },
+};
+
+#[inline]
+RTypeOpRdRsRt: RTypeOp = {
+    "add" => RTypeOp::Add,
+    "addu" => RTypeOp::Addu,
+    "and" => RTypeOp::And,
+    "or" => RTypeOp::Or,
+    "slt" => RTypeOp::Slt,
+    "sltu" => RTypeOp::Sltu,
+    "sub" => RTypeOp::Sub,
+    "subu" => RTypeOp::Subu,
+    "xor" => RTypeOp::Xor,
+    "nor" => RTypeOp::Nor,
+};
+
+#[inline]
+RTypeOpRdRtRs: RTypeOp = {
+    "srav" => RTypeOp::Srav,
+    "sllv" => RTypeOp::Sllv,
+    "srlv" => RTypeOp::Srlv,
+};
+
+#[inline]
+RTypeOpRdRtSh: RTypeOp = {
+    "sll" => RTypeOp::Sll,
+    "sra" => RTypeOp::Sra,
+    "srl" => RTypeOp::Srl,
+};
+
+#[inline]
+RTypeOpRsRt: RTypeOp = {
+    "div" => RTypeOp::Div,
+    "divu" => RTypeOp::Divu,
+    "mult" => RTypeOp::Mult,
+    "multu" => RTypeOp::Multu,
+};
+
+#[inline]
+RTypeOpRs: RTypeOp = {
+    "jr" => RTypeOp::Jr,
+    "mthi" => RTypeOp::Mthi,
+    "mtlo" => RTypeOp::Mtlo,
+};
+
+#[inline]
+RTypeOpRd: RTypeOp = {
+    "mfhi" => RTypeOp::Mfhi,
+    "mflo" => RTypeOp::Mflo,
+};
+
+#[inline]
+ITypeOpRtRs: ITypeOp = {
+    "addi" => ITypeOp::Addi,
+    "addiu" => ITypeOp::Addiu,
+    "andi" => ITypeOp::Andi,
+    "slti" => ITypeOp::Slti,
+    "sltiu" => ITypeOp::Sltiu,
+    "xori" => ITypeOp::Xori,
+};
+
+#[inline]
+ITypeOpRsRt: ITypeOp = {
+    "beq" => ITypeOp::Beq,
+    "bne" => ITypeOp::Bne,
+};
+
+// The u8 is rt, which distinguishes some of the instructions
+#[inline]
+ITypeOpRs: (ITypeOp, u8) = {
+    "bgez" => (ITypeOp::Bcond, BCOND_RT_BGEZ),
+    "bgezal" => (ITypeOp::Bcond, BCOND_RT_BGEZAL),
+    "bgtz" => (ITypeOp::Bgtz, 0),
+    "blez" => (ITypeOp::Blez, 0),
+    "bltz" => (ITypeOp::Bcond, BCOND_RT_BLTZ),
+    "bltzal" => (ITypeOp::Bcond, BCOND_RT_BLTZAL),
+};
+
+#[inline]
+StorageITypeOp: ITypeOp = {
+    "sb" => ITypeOp::Sb,
+    "sh" => ITypeOp::Sh,
+    "sw" => ITypeOp::Sw,
+    "swl" => ITypeOp::Swl,
+    "swr" => ITypeOp::Swr,
+    "lb" => ITypeOp::Lb,
+    "lbu" => ITypeOp::Lbu,
+    "lh" => ITypeOp::Lh,
+    "lhu" => ITypeOp::Lhu,
+    "lw" => ITypeOp::Lw,
+    "lwl" => ITypeOp::Lwl,
+    "lwr" => ITypeOp::Lwr,
+};
+
+#[inline]
+JTypeOp: JTypeOp = {
+    "j" => JTypeOp::Jump,
+    "jal" => JTypeOp::Jal,
+};
+
+Register: Register = {
+    "$" <Number> => Register::Number(<> as u8),
+    "$" <Identifier> => Register::Name(<>),
+};
+
+match {
+    // Ignore comments
+    r"#[^\n]*" => { },
+
+    // Ignore whitespace (but keep newlines)
+    "\t" => { },
+    "\r" => { },
+    " " => { },
+
+    // noop/nop has higher priority over labels
+    r"noop|nop",
+
+    // Catch-all for the rest of the terminals
+    _
+}
