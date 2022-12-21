@@ -5,7 +5,7 @@ use tempfile::NamedTempFile;
 
 mod fixtures;
 
-const BIN_NAME: &str = "mipssembler";
+const BIN_NAME: &str = "mips_assembler";
 
 #[test]
 fn test_main_case_1() {
