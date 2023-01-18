@@ -7,16 +7,7 @@ $$
 \gdef\Z{\mathtt {Z}}
 $$
 
-## Disclaimer: contains math
 
-* If you don't understand something
-  * Not your fault, this stuff is hard
-  * Nobody understands it fully
-* If you don't understand anything
-  * My fault, anything can be explained at some level
-* If you *do* understand everything
-  * Collect your Turing Award & Fields Medal
-  * Many open questions
 
 ## Zero knowledge proofs
 
