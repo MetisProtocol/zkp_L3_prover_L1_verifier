@@ -1,0 +1,2 @@
+cargo:rustc-env=TYPENUM_BUILD_CONSTS=/home/ubuntu/ministark/target/debug/build/typenum-55147b9f146cc1b9/out/consts.rs
+cargo:rustc-env=TYPENUM_BUILD_OP=/home/ubuntu/ministark/target/debug/build/typenum-55147b9f146cc1b9/out/op.rs

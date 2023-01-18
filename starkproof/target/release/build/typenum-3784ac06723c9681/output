@@ -1,0 +1,2 @@
+cargo:rustc-env=TYPENUM_BUILD_CONSTS=/home/ubuntu/ministark/target/release/build/typenum-3784ac06723c9681/out/consts.rs
+cargo:rustc-env=TYPENUM_BUILD_OP=/home/ubuntu/ministark/target/release/build/typenum-3784ac06723c9681/out/op.rs
