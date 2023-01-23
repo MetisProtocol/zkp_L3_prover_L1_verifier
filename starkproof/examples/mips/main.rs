@@ -36,7 +36,7 @@ fn main() {
 
     write_output(output_filepath, &data, &texts);
 
-    println!("Done!");
+    println!("Completed!");
 }
 
 fn extract_codes(lines: &[Line], data: &[Datum]) -> Vec<String> {
