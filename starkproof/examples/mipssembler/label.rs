@@ -29,12 +29,22 @@ pub fn is_label(code: &str) -> bool {
 
 pub fn resolve_labels(code: &str) -> Option<Label> {
     let label_regex = Regex::new(r"^.*:").unwrap();
-    if let Some(cap) = label_regex.captures_iter(&code).next() {
+    let label1_regex = label_regex; 
+    if let Some(cap) = &label1_regex.captures_iter(&code).next() {
         let name = cap[0].trim_end_matches(':');
         Some(Label::new(name, 0))
     } else {
         None
     }
+    
+    /*
+    let x = if let Some(x) = if let Some(cap) = label_regex.captures_iter(&code).next() {
+          let name = cap[0].trim_end_matches(':');
+ 
+          Some(Label::new(name, 0))
+         //  Some(None)
+      } { x };
+    */
 }
 
 pub fn get_addressed_labels(lines: &[Line], codes: &[String]) -> Vec<Label> {
