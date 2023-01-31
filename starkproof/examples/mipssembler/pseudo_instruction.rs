@@ -20,6 +20,7 @@ fn la(arguments: &str, data: &[Datum]) -> Vec<String> {
         .collect::<Vec<&str>>();
 
     if let [register, datum_name] = argument_text[..] {
+        println!("Test Value : {}{:?}", datum_name, argument_text[0]);
         if let Some(datum) = find_datum(datum_name, &data) {
             let shifted_datum_address = datum.address >> 16;
             result.push(format!("lui\t{}, {}", register, shifted_datum_address));
