@@ -41,6 +41,8 @@ gpu-poly = { path = "./gpu-poly" }
 rand = "0.8.5"
 snafu = { version = "0.7.4", default-features = false }
 rayon = { version = "1.5.3", optional = true }
+regex = "^1.4"
+phf = { version = "0.8", features = ["macros"] }
 
 # Apple silicon depencencies
 # TODO: remove. this should be abstracted away
