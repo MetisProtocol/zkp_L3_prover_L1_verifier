@@ -100,7 +100,7 @@ impl Air for BrainfuckAir {
             constraint / (X - last_trace_x)
         });
 
-        BrainfuckAir {
+        MipsAir {
             options,
             trace_info,
             execution_info,

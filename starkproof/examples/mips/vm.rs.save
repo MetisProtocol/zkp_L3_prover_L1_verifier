@@ -279,7 +279,7 @@ pub fn simulate(
         source_code,
     };
 
-    MipsTrace::new(
+    BrainfuckTrace::new(
         meta,
         processor_base_trace,
         memory_base_trace,
