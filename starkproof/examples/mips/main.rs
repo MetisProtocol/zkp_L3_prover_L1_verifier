@@ -1,6 +1,6 @@
 #![feature(allocator_api)]
 
-use air::BrainfuckAir;
+use air::MipsAir;
 use ark_serialize::CanonicalDeserialize;
 use ark_serialize::CanonicalSerialize;
 use ministark::Proof;
@@ -13,7 +13,7 @@ use std::io::Write;
 use std::path::PathBuf;
 use std::time::Instant;
 use structopt::StructOpt;
-use trace::BrainfuckTrace;
+use trace::MipsTrace;
 use vm::simulate;
 
 mod air;
@@ -24,8 +24,8 @@ mod trace;
 mod vm;
 
 #[derive(StructOpt, Debug)]
-#[structopt(name = "BrainSTARK", about = "miniSTARK brainfuck prover and verifier")]
-enum BrainfuckOptions {
+#[structopt(name = "MipsSTARK", about = "Metis mips prover and verifier")]
+enum MipsOptions {
     Prove {
         src: PathBuf,
         #[structopt(long, parse(from_os_str))]
@@ -60,9 +60,9 @@ fn main() {
     );
 
     // read command-line args
-    match BrainfuckOptions::from_args() {
-        BrainfuckOptions::Prove { src, dst, input } => prove(options, src, input, dst),
-        BrainfuckOptions::Verify {
+    match MipsOptions::from_args() {
+        MipsOptions::Prove { src, dst, input } => prove(options, src, input, dst),
+        MipsOptions::Verify {
             src,
             proof,
             input,
@@ -88,7 +88,7 @@ fn prove(options: ProofOptions, source_code_path: PathBuf, input: String, output
         String::from_utf8(output.clone()).unwrap()
     );
 
-    let prover = prover::BrainfuckProver::new(options);
+    let prover = prover::MipsProver::new(options);
     let now = Instant::now();
     let proof = prover.generate_proof(trace).unwrap();
     println!("Proof generated in: {:.0?}", now.elapsed());
@@ -115,7 +115,7 @@ fn verify(
 ) {
     let source_code = fs::read_to_string(source_code_path).unwrap();
     let proof_bytes = fs::read(proof_path).unwrap();
-    let proof: Proof<BrainfuckAir> = Proof::deserialize_compressed(proof_bytes.as_slice()).unwrap();
+    let proof: Proof<MipsAir> = Proof::deserialize_compressed(proof_bytes.as_slice()).unwrap();
     assert_eq!(input.as_bytes(), proof.public_inputs.input);
     assert_eq!(output.as_bytes(), proof.public_inputs.output);
     assert_eq!(source_code, proof.public_inputs.source_code);

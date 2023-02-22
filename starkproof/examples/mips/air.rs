@@ -28,14 +28,14 @@ pub struct ExecutionInfo {
     pub output: Vec<u8>,
 }
 
-pub struct BrainfuckAir {
+pub struct MipsAir {
     options: ProofOptions,
     trace_info: TraceInfo,
     execution_info: ExecutionInfo,
     constraints: Vec<AlgebraicExpression<Fp, Fq3>>,
 }
 
-impl Air for BrainfuckAir {
+impl Air for MipsAir {
     type Fp = Fp;
     type Fq = Fq3;
     type PublicInputs = ExecutionInfo;

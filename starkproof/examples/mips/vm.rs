@@ -1,4 +1,4 @@
-use crate::tables::BrainfuckColumn;
+use crate::tables::MipsColumn;
 use crate::tables::InputBaseColumn;
 use crate::tables::InstructionBaseColumn;
 use crate::tables::MemoryBaseColumn;

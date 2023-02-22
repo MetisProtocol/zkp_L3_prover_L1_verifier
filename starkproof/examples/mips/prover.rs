@@ -1,28 +1,28 @@
-use crate::air::BrainfuckAir;
+use crate::air::MipsAir;
 use crate::air::ExecutionInfo;
-use crate::trace::BrainfuckTrace;
+use crate::trace::MipsTrace;
 use gpu_poly::fields::p18446744069414584321::Fp;
 use gpu_poly::fields::p18446744069414584321::Fq3;
 use ministark::ProofOptions;
 use ministark::Prover;
 
-pub struct BrainfuckProver(ProofOptions);
+pub struct MipsProver(ProofOptions);
 
-impl Prover for BrainfuckProver {
+impl Prover for MipsProver {
     type Fp = Fp;
     type Fq = Fq3;
-    type Air = BrainfuckAir;
-    type Trace = BrainfuckTrace;
+    type Air = MipsAir;
+    type Trace = MipsTrace;
 
     fn new(options: ProofOptions) -> Self {
-        BrainfuckProver(options)
+        MipsProver(options)
     }
 
     fn options(&self) -> ProofOptions {
         self.0
     }
 
-    fn get_pub_inputs(&self, trace: &BrainfuckTrace) -> ExecutionInfo {
+    fn get_pub_inputs(&self, trace: &MipsTrace) -> ExecutionInfo {
         let meta = trace.meta();
         ExecutionInfo {
             source_code: meta.source_code.to_string(),
