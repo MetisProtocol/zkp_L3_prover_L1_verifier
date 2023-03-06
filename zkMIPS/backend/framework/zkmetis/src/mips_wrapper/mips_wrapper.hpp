@@ -1,3 +1,15 @@
+#ifndef ZKMETIS_API_HPP
+#define ZKMETIS_API_HPP
+
+#include <iostream>
+#include <string>
+#include <regex>
+#include "zkMipsParser.hpp"
+#include "executeProtocol.hpp"
+#include "protocols/protocol.hpp"
+#include "RAMtoBair/ConstraintSystemToBair/cs2Bair.hpp"
+#include "RAMtoBair/RamToContraintSystem/ALU.hpp"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
