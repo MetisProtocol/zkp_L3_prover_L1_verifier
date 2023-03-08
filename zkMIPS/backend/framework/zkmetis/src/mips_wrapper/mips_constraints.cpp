@@ -72,12 +72,12 @@ class polyAdd_class : public PolynomialInterface {
 };
 } 
 
-    mips_CS::mips_CS() {
+    Mips_CS::mips_CS() {
         polys_.push_back(polyPtr_t(new polyAdd_class()));
     }
 
-    mips_CS* mips_CS::clone() const{
-        return new mips_CS();
+    Mips_CS* mips_CS::clone() const{
+        return new Mips_CS();
     }
 
     using std::vector;

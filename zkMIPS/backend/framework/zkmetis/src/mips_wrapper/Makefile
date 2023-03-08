@@ -22,7 +22,7 @@ SRCDIRS := $(shell find . -name '*.$(SRCEXT)' -exec dirname {} \; | uniq)
 OBJS    := $(patsubst %.$(SRCEXT),$(OBJDIR)/%.o,$(SRCS))
 
 # TARGET=$(BLDDIR)/fs-rs
-TARGET=$(BLDDIR)/libfsrs.a
+TARGET=$(BLDDIR)/libmips.a
 # DST=$(EXEDIR)/fs-rs
 all: $(TARGET)
 

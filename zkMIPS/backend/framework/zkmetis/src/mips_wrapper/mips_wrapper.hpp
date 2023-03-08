@@ -14,8 +14,9 @@
 extern "C" {
 #endif
 
-    void execute(const unsigned int a, const unsigned int b, const unsigned int securityParameter);
+   // void execute(const string assemblyFile, const string primaryTapeFile, const string auxTapeFile, const string& macros_file, const string& address, uint16_t port_number, const string& session, const size_t t, const size_t securityParameter, bool verbose);
 
+    void  execute(const string assemblyFile, const string primaryTapeFile, const string auxTapeFile, const size_t t, const size_t securityParameter, const string& macros_file, const string& address, uint16_t port_number, bool verbose, const string& session); 
 #ifdef __cplusplus
 }
 #endif

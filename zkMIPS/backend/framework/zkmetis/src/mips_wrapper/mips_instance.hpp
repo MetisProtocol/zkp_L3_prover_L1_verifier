@@ -7,15 +7,15 @@
 namespace simple_mips{
 namespace ACSP_FOR_MIPS{
 
-    class Fsrs_CS : public libstark::ConstraintSys{
+    class Mips_CS : public libstark::ConstraintSys{
     public:
-        Fsrs_CS();
+        Mips_CS();
     
     // the amount of inputs each polynomial expects
-    size_t numVars() const{ return 2 * Fsrs::NUMREGS; }
+    size_t numVars() const{ return 2 * mips::NUMREGS; }
     size_t numMappings() const{ return polys_.size(); }
 
-    Fsrs_CS* clone() const;
+    Mips_CS* clone() const;
 
     // the constraint polynomials
     const polySet_t& constraints() const{ return polys_; }

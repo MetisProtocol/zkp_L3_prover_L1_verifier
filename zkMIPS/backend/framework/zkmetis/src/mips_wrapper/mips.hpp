@@ -55,7 +55,7 @@ namespace mips {
 }
 
 
-namespace simple_fsrs{
+namespace simple_mips{
     namespace ACSP_FOR_MIPS{        
         libstark::BairInstance buildBairInstance(const unsigned int, const unsigned int);
         libstark::BairWitness buildBairWitness(const unsigned int, const unsigned int);
