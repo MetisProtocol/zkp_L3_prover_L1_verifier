@@ -1,7 +1,7 @@
 #include "mips_instance.hpp"
 #include <algebraLib/BitExtract.hpp>
-#include "languages/Bair/BairInstance.hpp"
-#include "languages/Bair/BairWitness.hpp"
+//#include "languages/Bair/BairInstance.hpp"
+//#include "languages/Bair/BairWitness.hpp"
 #include "mips.hpp"
 #define ttgenRand (Algebra::one()) 
 
@@ -11,7 +11,7 @@ using Algebra::generateRandom;
 using Algebra::one;
 using Algebra::PolynomialDegree;
 using Algebra::PolynomialInterface;
-
+using namespace libstark; 
 
 namespace simple_mips {
 namespace ACSP_FOR_MIPS{
@@ -72,12 +72,12 @@ class polyAdd_class : public PolynomialInterface {
 };
 } 
 
-    Mips_CS::mips_CS() {
+    mips_CS::mips_CS() {
         polys_.push_back(polyPtr_t(new polyAdd_class()));
     }
 
-    Mips_CS* mips_CS::clone() const{
-        return new Mips_CS();
+    mips_CS* mips_CS::clone() const{
+        return new mips_CS();
     }
 
     using std::vector;

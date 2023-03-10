@@ -1,9 +1,9 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <languages/Bair/BairWitnessChecker.hpp>
+// #include <libstark/languages/Bair/BairWitnessChecker.hpp>
 
-#include <protocols/protocol.hpp>
+// #include <protocols/protocol.hpp>
 #include "mips.hpp"
 #include "mips_wrapper.hpp"
 
@@ -17,13 +17,86 @@
 
 using namespace simple_mips;
 using namespace simple_mips::ACSP_FOR_MIPS;
+using namespace libstark;
+
 
 using std::cout;
 using std::endl;
 using std::string;
 using std::stoul;
-
+using namespace std;
 using std::vector;
+
+const string help_msg_prefix     = "--help";
+const string examples_prefix     = "--examples";
+const string verbose_prefix      = "--verbose";
+const string show_asm_prefix     = "--show-asm";
+const string zkmips_file_prefix   = "--asm";
+const string timesteps_prefix    = "--tsteps";
+const string security_prefix     = "--security";
+const string primary_tape_prefix = "--pubtape";
+const string private_tape_prefix = "--auxtape";
+const string run_verifier_prefix = "--verifier";
+const string no_proof_prefix     = "--no-proof";
+const string run_prover_prefix   = "--prover";
+const string address_port_prefix = "--address";
+const string session_prefix      = "--session";
+const string debug_prefix        = "--debug";
+extern string zmips_filename_;
+
+inline bool file_exists(const string& name) {
+    struct stat buffer;
+    return (stat (name.c_str(), &buffer) == 0);
+}
+
+void print_help(const string exeName, string errorMsg) {
+    if (errorMsg != "") cout << endl << YELLOW << errorMsg << RESET << endl << endl;
+    cout << YELLOW << "Usage:\n$ ";
+    cout << GREEN << exeName << YELLOW << " " << zkmips_file_prefix << RESET << " <zMIPS assembly file path> [" << YELLOW << timesteps_prefix << RESET << " <trace length log_2>] [" << YELLOW << security_prefix << RESET << " <security parameter]> [" << YELLOW << primary_tape_prefix << RESET << " <primaryTapeFile>] [" << YELLOW << private_tape_prefix << RESET << " <auxTapeFile>] [" << YELLOW << run_verifier_prefix << RESET << " | " << YELLOW << run_prover_prefix << RESET << "] [" << YELLOW << address_port_prefix << RESET << " <address:port_number>] [" << YELLOW << session_prefix << RESET << " <sessionID>]" << endl << endl;
+
+    cout << YELLOW << help_msg_prefix   << RESET << "      : Display this help message" << endl;
+    cout << YELLOW << examples_prefix   << RESET << "  : Display some usage examples" << endl;
+    cout << YELLOW << show_asm_prefix   << RESET << "  : Display zMIPS assembly input" << endl;
+    cout << YELLOW << verbose_prefix    << RESET << "   : Verbose output, print BAIR, ACSP, APR and FRI specifications" << endl;
+    cout << YELLOW << no_proof_prefix   << RESET << "  : Run the zMIPS execution engine (i.e., without generating a proof)." << endl << endl;
+
+    cout << YELLOW << zkmips_file_prefix << RESET << "       : Path to the zMIPS assembly code " << YELLOW << "(required)" << RESET << endl;
+    cout << YELLOW << timesteps_prefix  << RESET << "    : trace length log_2 (optional, default = 5)" << endl;
+    cout << YELLOW << security_prefix   << RESET << "  : security parameter (optional, default = 60)" << endl;
+    cout << YELLOW << primary_tape_prefix << RESET << "   : path to the primary tape file (optional, default = none)" << endl;
+    cout << YELLOW << private_tape_prefix << RESET << "   : path to the auxiliary tape file (optional, default = none)" << endl << endl;
+
+    cout << "The flags below enable verification over the network; if neither is enabled, the execution will be locally. Verifier acts as the server and thus should be executed first." << endl;
+    cout << YELLOW << address_port_prefix << RESET << "  : verifier-address:port-number (optional, default = 'localhost:1234')" << endl;
+    cout << YELLOW << run_verifier_prefix << RESET << " : enables execution of the verifier, listening on port-number (optional, default = false)" << endl;
+    cout << YELLOW << run_prover_prefix   << RESET << "   : enables execution of the prover, transmitting to verifier-address:port-number (optional, default = false)" << endl;
+    cout << YELLOW << session_prefix      << RESET << "  : if enabled, prover has to provide the correct sessionID in order to connect to the verifier (optional, default = false)" << endl;
+}
+
+string getPathName(const string& s) {
+   char sep = '/';
+   size_t i = s.rfind(sep, s.length());
+   if (i != string::npos) {
+      return(s.substr(0, i));
+   }
+   return("");
+}
+
+void print_examples(const string exeName) {
+    cout << YELLOW << "Example:\n$ " << RESET;
+    cout << exeName << " examples-zmips/simple_add.asm " << timesteps_prefix << " 10 " << security_prefix << " 120" << endl;
+    cout << endl << "The above execution results in execution of STARK simulation over the simple_add program, using at most 1023 (which is 2^10-1) machine steps, and soundness error at most 2^-120." << endl;
+    cout << endl << "In the simulation the Prover and Verify interact, the Prover generates a proof and the Verifier verifies it. During the executions the specifications of generated BAIR and APR, measurements, and Verifiers decision, are printed to the standard output." << endl;
+
+    cout << endl << YELLOW << "A simple read from tapes example:\n$ " << RESET;
+    cout << exeName << " ./examples-zmips/read_test.asm " << timesteps_prefix << " 10 " << security_prefix << " 120 " << primary_tape_prefix << " ./examples-zmips/read_test.pubtape " << private_tape_prefix <<" ./examples-zmips/read_test.auxtape" << endl;
+    cout << endl << YELLOW << "The simple read from tapes example over the network:\n$ " << RESET;
+    cout << exeName << " examples-zmips/read_test.asm " << timesteps_prefix << " 10 " << security_prefix << " 120 " << primary_tape_prefix << " ./examples-zmips/read_test.pubtape " << private_tape_prefix <<" ./examples-zmips/read_test.auxtape " << run_verifier_prefix << " " << address_port_prefix << "localhost:2324" << YELLOW << "\n$ " << RESET;
+    cout << exeName << " examples-zmips/read_test.asm " << timesteps_prefix << " 10 " << security_prefix << " 120 " << primary_tape_prefix << " ./examples-zmips/read_test.pubtape " << private_tape_prefix <<" ./examples-zmips/read_test.auxtape " << run_prover_prefix << " " << address_port_prefix << "localhost:2324" << endl;
+
+    cout << endl << YELLOW << "Knowledge of Factorization example:\n$ " << RESET;
+    cout << exeName << " examples-zmips/knowledge_of_factorization.asm " << timesteps_prefix << " 10 " << security_prefix << " 120 " << private_tape_prefix << " ./examples-zmips/knowledge_of_factorization_auxtape.txt" << endl;
+}
 
 int main(int argc, char *argv[]) {
   

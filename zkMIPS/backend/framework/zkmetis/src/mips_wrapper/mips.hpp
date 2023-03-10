@@ -9,8 +9,8 @@
 #include "protocols/protocol.hpp"
 #include "RAMtoBair/ConstraintSystemToBair/cs2Bair.hpp"
 #include "RAMtoBair/RamToContraintSystem/ALU.hpp"
-#include "languages/Bair/BairInstance.hpp"
-#include "languages/Bair/BairWitness.hpp"
+// #include <languages/Bair/BairInstance.hpp>
+// #include <languages/Bair/BairWitness.hpp>
 
 #include <algebraLib/BitExtract.hpp>
 
@@ -19,6 +19,7 @@
 
 #define EXTDIM 64 
 
+// using namespace libstark::languages::Bair;
 using namespace Algebra;
 
 using std::cout;

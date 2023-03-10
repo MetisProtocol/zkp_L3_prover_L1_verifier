@@ -1,6 +1,6 @@
 #ifndef ZKMETIS_API_HPP
 #define ZKMETIS_API_HPP
-
+#endif
 #include <iostream>
 #include <string>
 #include <regex>

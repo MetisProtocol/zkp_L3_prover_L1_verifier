@@ -2,8 +2,10 @@
 #define __ACSP_FOR_MIPS_INSTANCE_HPP__
 
 #include "mips.hpp"
-#include "languages/Bair/ConstraintsSys.hpp"
+// #include "languages/Bair/ConstraintsSys.hpp"
+// #include "languages/Bair"
 
+using namespace libstark;
 namespace simple_mips{
 namespace ACSP_FOR_MIPS{
 

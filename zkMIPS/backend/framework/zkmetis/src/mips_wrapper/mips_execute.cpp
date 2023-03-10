@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <languages/Bair/BairWitnessChecker.hpp>
+// #include <languages/Bair/BairWitnessChecker.hpp>
 #include "zkmetis-api.hpp"
 #include <protocols/protocol.hpp>
 #include "mips.hpp"
@@ -9,6 +9,7 @@
 
 using namespace simple_mips;
 using namespace simple_mips::ACSP_FOR_MIPS;
+using namespace libstark;
 
 using std::cout;
 using std::endl;
@@ -16,6 +17,11 @@ using std::stoul;
 using std::string;
 
 using std::vector;
+
+inline bool file_exists(const string& name) {
+    struct stat buffer;
+    return (stat (name.c_str(), &buffer) == 0);
+}
 
 // a, b: secret numbers of the initial values of a fibonacci sequence for some sequence length
 void execute(const string assemblyFile, const string primaryTapeFile, const string auxTapeFile, const size_t t, const size_t securityParameter, const string& macros_file, const string& address, uint16_t port_number, bool verbose, const string& session) {
