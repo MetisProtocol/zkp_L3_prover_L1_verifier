@@ -6,6 +6,7 @@
 #include <protocols/protocol.hpp>
 #include "mips.hpp"
 #include "mips_wrapper.hpp"
+#include <sys/stat.h>
 
 using namespace simple_mips;
 using namespace simple_mips::ACSP_FOR_MIPS;
@@ -17,6 +18,7 @@ using std::stoul;
 using std::string;
 
 using std::vector;
+using namespace std;
 
 inline bool file_exists(const string& name) {
     struct stat buffer;
@@ -24,7 +26,7 @@ inline bool file_exists(const string& name) {
 }
 
 // a, b: secret numbers of the initial values of a fibonacci sequence for some sequence length
-void execute(const string assemblyFile, const string primaryTapeFile, const string auxTapeFile, const size_t t, const size_t securityParameter, const string& macros_file, const string& address, uint16_t port_number, bool verbose, const string& session) {
+void execute(const string assemblyFile, const string primaryTapeFile, const string auxTapeFile, const size_t t, const size_t securityParameter, bool prover, const string& address, uint16_t port_number, bool verbose, const string& session, const string& macros_file) {
     
     if (primaryTapeFile != "" && !file_exists(primaryTapeFile)) {
         std::cerr << "File " << primaryTapeFile << " does not exist.\n";
@@ -34,6 +36,7 @@ void execute(const string assemblyFile, const string primaryTapeFile, const stri
         std::cerr << "File " << auxTapeFile << " does not exist.\n";
         exit(EXIT_FAILURE);
     }
+   // string macros_file = "";
     string asmFile = parse_zkmips(assemblyFile, primaryTapeFile, macros_file, false);
     //Initialize instance
     initRAMParamsFromEnvVariables();
@@ -50,7 +53,7 @@ void execute(const string assemblyFile, const string primaryTapeFile, const stri
     const auto bairWitness = constructWitness(program, t, private_lines);     // witness is generated from the prover
     if (!found_answer_) {
         std::cout << "\nTried for 2^15-1 timesteps and did not find answer.\n";
-        return -1;
+        return;
     }
     libstark::Protocols::executeProverProtocol(bairInstance, bairWitness, address, port_number, verbose, answer_, session);
 

@@ -16,7 +16,7 @@ extern "C" {
 
    // void execute(const string assemblyFile, const string primaryTapeFile, const string auxTapeFile, const string& macros_file, const string& address, uint16_t port_number, const string& session, const size_t t, const size_t securityParameter, bool verbose);
 
-    void  execute(const string assemblyFile, const string primaryTapeFile, const string auxTapeFile, const size_t t, const size_t securityParameter, const string& macros_file, const string& address, uint16_t port_number, bool verbose, const string& session); 
+    void  execute(const string assemblyFile, const string primaryTapeFile, const string auxTapeFile, const size_t t, const size_t securityParameter, bool prover, const string& address, uint16_t port_number, bool verbose, const string& session, const string& macros_file); 
 #ifdef __cplusplus
 }
 #endif

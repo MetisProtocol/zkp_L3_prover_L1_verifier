@@ -178,7 +178,10 @@ int main(int argc, char *argv[]) {
     /* Run prover and verifier separately */
     bool prover = args.cmd_option_exists(run_prover_prefix);
     bool verifier = args.cmd_option_exists(run_verifier_prefix);
-   
+ //   const string executable(argv[0]);
+//    const string zkmetis("zkmetis");
+//    const string path = executable.substr(0, executable.size() - zkmetis.size());
+    const string macros_file = path+"framework/zkmetis/src/macros.json";   
     if (prover == verifier && prover) {
         print_help(argv[0], "Cannot be both prover and verifier at the same time.");
         return EXIT_FAILURE;
@@ -209,7 +212,7 @@ int main(int argc, char *argv[]) {
     cout << "Test Prover " << "\n"; 
     if (prover) {
          cout << "Prover:\nExecuting over the network simulation with assembly from '" + assemblyFile + "' over 2^" + to_string(executionLenLog) +"-1 steps, soundness error at most 2^-" +to_string(securityParameter)+", public inputs from '" << primaryTapeFile <<"' and private inputs from '"+auxTapeFile<<"'. Verifier is at " << address << ":" << port_number<< ".\n\n";
-        execute(asmFile, primaryTapeFile, auxTapeFile, executionLenLog, securityParameter, prover, address, port_number, verbose, session);
+        execute(asmFile, primaryTapeFile, auxTapeFile, executionLenLog, securityParameter, prover, address, port_number, verbose, session, macros_file);
         cout << "Complete Prover \n";
     }
     if (!debug) std::remove(asmFile.c_str());

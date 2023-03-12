@@ -72,16 +72,16 @@ class polyAdd_class : public PolynomialInterface {
 };
 } 
 
-    mips_CS::mips_CS() {
+    Mips_CS::Mips_CS() {
         polys_.push_back(polyPtr_t(new polyAdd_class()));
     }
 
-    mips_CS* mips_CS::clone() const{
-        return new mips_CS();
+    Mips_CS* Mips_CS::clone() const{
+        return new Mips_CS();
     }
 
     using std::vector;
-    vector<FieldElement> mips_CS::eval(const vector<FieldElement>& assignment) const{
+    vector<FieldElement> Mips_CS::eval(const vector<FieldElement>& assignment) const{
         vector<FieldElement> res;
         for(const auto& p: polys_){
             res.push_back(p->eval(assignment));

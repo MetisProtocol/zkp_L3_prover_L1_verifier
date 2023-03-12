@@ -41,7 +41,7 @@ libstark::BairInstance buildBairInstance(const unsigned int a, const unsigned in
     const size_t vectorsLen = mips::NUMREGS;
     // const short domainSizeIndicator = Fsrs::getDim(params.length);
     
-    BairInstance::constraintsPtr_t constraints_assignment(new mips_CS());
+    BairInstance::constraintsPtr_t constraints_assignment(new empty_CS());
     BairInstance::constraintsPtr_t constraints_permutation(new empty_CS());
 
     BairInstance::boundaryConstraints_t boundary;
