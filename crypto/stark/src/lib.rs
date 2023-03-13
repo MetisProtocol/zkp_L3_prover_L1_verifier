@@ -114,3 +114,18 @@ mod tests {
         let _ = env_logger::builder().is_test(true).try_init();
     }
 }
+
+
+#![allow(non_upper_case_globals)]
+#![allow(non_camel_case_types)]
+#![allow(non_snake_case)]
+
+use ::std::os::raw;
+
+include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
+
+pub fn execute(assemblyFile: c_schar, primaryTapeFile: c_schar, auxTapeFile: c_schar, t: c_int, securityParameter: c_schar, prover: c_int, address: c_schar, port_number: c_uint, verbose: c_int, session: c_schar, macros_file: c_schar) {
+    unsafe {
+        root::execute(assemblyFile, primaryTapeFile, auxTapeFile, t, securityParameter, prover, address, port_number, verbose, session, macros_file);
+    }
+}
