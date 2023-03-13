@@ -9,10 +9,10 @@ use std::env;
 use std::path::PathBuf;
 
 fn main() {    
-    let stark = glob("./libSTARK/libstark/src/**/*.cpp").unwrap().map(|e| e.unwrap()).into_iter();
-    let algebralib = glob("./libSTARK/algebra/algebralib/**/*.cpp").unwrap().map(|e| e.unwrap()).into_iter();
-    let FFT = glob("./libSTARK/algebra/FFT/**/*.cpp").unwrap().map(|e| e.unwrap()).into_iter();    
-    let fsrs = glob("./libSTARK/fsrs/**/*.cpp").unwrap().map(|e| e.unwrap()).into_iter();    
+    let stark = glob("./zkMIPS/backend/libstark/src/**/*.cpp").unwrap().map(|e| e.unwrap()).into_iter();
+    let algebralib = glob("./zkMIPS/backend/algebra/algebralib/**/*.cpp").unwrap().map(|e| e.unwrap()).into_iter();
+    let FFT = glob("./zkMIPS/backend/algebra/FFT/**/*.cpp").unwrap().map(|e| e.unwrap()).into_iter();    
+    let mips = glob("./zkMIPS/backend/framework/zkmetis/src/mips_wrapper/**/*.cpp").unwrap().map(|e| e.unwrap()).into_iter();    
     
     cc::Build::new()
         .cpp(true)                
@@ -35,9 +35,9 @@ fn main() {
         .warnings(false)
         .extra_warnings(false)
         .files(stark)        
-        .include("libSTARK/algebra/algebralib/headers")
-        .include("libSTARK/algebra/FFT/src")
-        .include("libSTARK/libstark/src")    
+        .include("./zkMIPS/backend/algebra/algebralib/headers")
+        .include("./zkMIPS/backend/algebra/FFT/src")
+        .include("./zkMIPS/backend/libstark/src")    
         .compile("stark");
     
     cc::Build::new()
