@@ -30,7 +30,7 @@
 
 using gadgetlib::Opcode;
 using gadgetlib::Log2ceil;
-
+// using namespace libstark::common::Utils;
 
 
 /*************************************************************************************************/

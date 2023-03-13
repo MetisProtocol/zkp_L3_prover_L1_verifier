@@ -16,6 +16,7 @@
 #define NUMBER_OPCODES 43
 #define BIN_EOF_STRING "EOF"
 
+// using namespace libstark;
 
 enum Registers {
     ZERO_REGISTER = 0,
