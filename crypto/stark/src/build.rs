@@ -1,8 +1,8 @@
 #![allow(non_snake_case)]
 
-extern crate glob;
-extern crate cc;
-extern crate bindgen;
+// extern crate glob;
+// extern crate cc;
+// extern crate bindgen;
 
 use glob::glob;
 use std::env;
@@ -12,7 +12,7 @@ fn main() {
     let stark = glob("./zkMIPS/backend/libstark/src/**/*.cpp").unwrap().map(|e| e.unwrap()).into_iter();
     let algebralib = glob("./zkMIPS/backend/algebra/algebralib/**/*.cpp").unwrap().map(|e| e.unwrap()).into_iter();
     let FFT = glob("./zkMIPS/backend/algebra/FFT/**/*.cpp").unwrap().map(|e| e.unwrap()).into_iter();    
-    let mips = glob("./zkMIPS/backend/framework/zkmetis/src/mips_wrapper/**/*.cpp").unwrap().map(|e| e.unwrap()).into_iter();    
+    let mips = glob("./zkMIPS/backend/framework/zkmetis/src/mips_wrapper/*.cpp").unwrap().map(|e| e.unwrap()).into_iter();    
     
     cc::Build::new()
         .cpp(true)                
@@ -61,9 +61,9 @@ fn main() {
         .warnings(false)
         .extra_warnings(false)
         .files(algebralib)                
-        .include("libSTARK/algebra/algebralib/headers")
-        .include("libSTARK/algebra/FFT/src")
-        .include("libSTARK/libstark/src")    
+        .include("./zkMIPS/backend/algebra/algebralib/headers")
+        .include("./zkMIPS/backend/algebra/FFT/src")
+        .include("./zkMIPS/backend/libstark/src")    
         .compile("algebralib");
 
     cc::Build::new()
@@ -88,9 +88,9 @@ fn main() {
         .warnings(false)
         .extra_warnings(false)
         .files(FFT)        
-        .include("libSTARK/algebra/algebralib/headers")
-        .include("libSTARK/algebra/FFT/src")
-        .include("libSTARK/libstark/src")
+        .include("./zkMIPS/backend/algebra/algebralib/headers")
+        .include("./zkMIPS/backend/algebra/FFT/src")
+        .include("./zkMIPS/backend/libstark/src")
         .compile("FFT");
 
     cc::Build::new()
@@ -113,16 +113,16 @@ fn main() {
         .static_flag(true)     
         .warnings(false)
         .extra_warnings(false) 
-        .files(fsrs)        
-        .include("libSTARK/algebra/algebralib/headers")
-        .include("libSTARK/algebra/FFT/src")
-        .include("libSTARK/libstark/src")
-        .compile("fsrs");
+        .files(mips)        
+        .include("./zkMIPS/backend/algebra/algebralib/headers")
+        .include("./zkMIPS/backend/algebra/FFT/src")
+        .include("./zkMIPS/backend/libstark/src")
+        .compile("mips");
 
     println!("cargo:rustc-link-lib=gomp");     
 
     let bindings = bindgen::builder()        
-        .header("libSTARK/fsrs/Fsrs_wrapper.hpp")               
+        .header("./zkMIPS/backend/framework/zkmetis/src/mips_wrapper/mips_wrapper.hpp")               
         .trust_clang_mangling(false)
         .rustfmt_bindings(true)      
         .enable_cxx_namespaces()

@@ -37,16 +37,18 @@
 )]
 #![cfg_attr(feature = "std", warn(missing_debug_implementations,))]
 // rand_xoshiro v0.4.0 is required for a zkp-stark example and v0.3.1 for criterion
-#![allow(clippy::multiple_crate_versions)]
+#[allow(clippy::multiple_crate_versions)]
 // TODO: Toggle based on stable/nightly
-#![allow(clippy::missing_errors_doc)]
+#[allow(clippy::missing_errors_doc)]
 // TODO: Add `must_use` attributes
-#![allow(clippy::must_use_candidate)]
+#[allow(clippy::must_use_candidate)]
 // TODO: To many false positives
-#![allow(clippy::enum_glob_use)]
+#[allow(clippy::enum_glob_use)]
 // TODO: False positives <https://github.com/rust-lang/rust-clippy/issues/5917>
-#![allow(clippy::wildcard_imports)]
-
+#[allow(clippy::wildcard_imports)]
+#[allow(non_upper_case_globals)]
+#[allow(non_camel_case_types)]
+#[allow(non_snake_case)]
 mod channel;
 mod constraints;
 mod polynomial;
@@ -75,7 +77,7 @@ mod rational_equality;
 #[cfg(feature = "prover")]
 mod trace_table;
 // TODO: Have unconditional Debug trait on all types
-
+extern crate glob;
 // In no std mode, substitute no_std_compat
 #[cfg(not(feature = "std"))]
 #[cfg_attr(feature = "std", macro_use)]
@@ -116,9 +118,9 @@ mod tests {
 }
 
 
-#![allow(non_upper_case_globals)]
-#![allow(non_camel_case_types)]
-#![allow(non_snake_case)]
+#[allow(non_upper_case_globals)]
+#[allow(non_camel_case_types)]
+#[allow(non_snake_case)]
 
 use ::std::os::raw;
 
