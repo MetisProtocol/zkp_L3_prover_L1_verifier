@@ -10,7 +10,6 @@ pub mod root {
             primaryTapeFile: ::std::os::raw::c_schar,
             auxTapeFile: ::std::os::raw::c_schar,
             t: ::std::os::raw::c_int,
-            securityParameter: ::std::os::raw::c_schar,
             prover: ::std::os::raw::c_int,
             address: ::std::os::raw::c_schar,
             port_number: ::std::os::raw::c_uint,

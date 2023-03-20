@@ -9,10 +9,10 @@ use std::env;
 use std::path::PathBuf;
 
 fn main() {    
-    let stark = glob("./zkMIPS/backend/libstark/src/**/*.cpp").unwrap().map(|e| e.unwrap()).into_iter();
-    let algebralib = glob("./zkMIPS/backend/algebra/algebralib/**/*.cpp").unwrap().map(|e| e.unwrap()).into_iter();
-    let FFT = glob("./zkMIPS/backend/algebra/FFT/**/*.cpp").unwrap().map(|e| e.unwrap()).into_iter();    
-    let mips = glob("./zkMIPS/backend/framework/zkmetis/src/mips_wrapper/*.cpp").unwrap().map(|e| e.unwrap()).into_iter();    
+    let stark = glob("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/libstark/src/**/*.cpp").unwrap().map(|e| e.unwrap()).into_iter();
+    let algebralib = glob("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/algebra/algebralib/**/*.cpp").unwrap().map(|e| e.unwrap()).into_iter();
+    let FFT = glob("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/algebra/FFT/**/*.cpp").unwrap().map(|e| e.unwrap()).into_iter();    
+    let mips = glob("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/framework/zkmetis/src/mips_wrapper/*.cpp").unwrap().map(|e| e.unwrap()).into_iter();    
     
     cc::Build::new()
         .cpp(true)                
@@ -29,17 +29,18 @@ fn main() {
         .flag("-mtune=native")
         .flag("-Isrc")   
         .flag("-Xpreprocessor")
-        .flag("-pthread")   
-        .flag("-lomp")              
+//        .flag("-pthread")   
+//        .flag("-lomp")              
         .static_flag(true)
         .warnings(false)
         .extra_warnings(false)
         .files(stark)        
-        .include("./zkMIPS/backend/algebra/algebralib/headers")
-        .include("./zkMIPS/backend/algebra/FFT/src")
-        .include("./zkMIPS/backend/libstark/src")    
+        .include("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/algebra/algebralib/headers")
+        .include("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/algebra/FFT/src")
+        .include("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/libstark/src")    
         .compile("stark");
-    
+
+//    print!(" Hello, World!");    
     cc::Build::new()
         .cpp(true)    
         .flag("-xc++")
@@ -55,15 +56,15 @@ fn main() {
         .flag("-mtune=native")
         .flag("-Isrc")   
         .flag("-Xpreprocessor")
-        .flag("-pthread")   
-        .flag("-lomp")  
+  //      .flag("-pthread")   
+  //      .flag("-lomp")  
         .static_flag(true)
         .warnings(false)
         .extra_warnings(false)
         .files(algebralib)                
-        .include("./zkMIPS/backend/algebra/algebralib/headers")
-        .include("./zkMIPS/backend/algebra/FFT/src")
-        .include("./zkMIPS/backend/libstark/src")    
+        .include("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/algebra/algebralib/headers")
+        .include("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/algebra/FFT/src")
+        .include("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/libstark/src")    
         .compile("algebralib");
 
     cc::Build::new()
@@ -81,16 +82,16 @@ fn main() {
         .flag("-mtune=native")
         .flag("-Isrc")   
         .flag("-Xpreprocessor")
-        .flag("-pthread")   
-        .flag("-lomp")  
+    //    .flag("-pthread")   
+    //    .flag("-lomp")  
         .flag("-mpclmul") 
         .static_flag(true)
         .warnings(false)
         .extra_warnings(false)
         .files(FFT)        
-        .include("./zkMIPS/backend/algebra/algebralib/headers")
-        .include("./zkMIPS/backend/algebra/FFT/src")
-        .include("./zkMIPS/backend/libstark/src")
+        .include("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/algebra/algebralib/headers")
+        .include("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/algebra/FFT/src")
+        .include("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/libstark/src")
         .compile("FFT");
 
     cc::Build::new()
@@ -108,37 +109,37 @@ fn main() {
         .flag("-mtune=native")
         .flag("-Isrc")   
         .flag("-Xpreprocessor")
-        .flag("-pthread")   
-        .flag("-lomp")                      
+      //  .flag("-pthread")   
+      //  .flag("-lomp")                      
         .static_flag(true)     
         .warnings(false)
         .extra_warnings(false) 
         .files(mips)        
-        .include("./zkMIPS/backend/algebra/algebralib/headers")
-        .include("./zkMIPS/backend/algebra/FFT/src")
-        .include("./zkMIPS/backend/libstark/src")
+        .include("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/algebra/algebralib/headers")
+        .include("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/algebra/FFT/src")
+        .include("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/libstark/src")
         .compile("mips");
 
     println!("cargo:rustc-link-lib=gomp");     
 
     let bindings = bindgen::builder()        
-        .header("./zkMIPS/backend/framework/zkmetis/src/mips_wrapper/mips_wrapper.hpp")               
+        .header("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/framework/zkmetis/src/mips_wrapper/mips_wrapper.hpp")               
         .trust_clang_mangling(false)
         .rustfmt_bindings(true)      
         .enable_cxx_namespaces()
         .clang_arg(r"-xc++")
         .clang_arg(r"-std=c++11")
         .clang_arg("-Isrc")
-        .clang_arg("-IlibSTARK/algebra/algebralib/headers")    
-        .clang_arg("-IlibSTARK/algebra/FFT/src")
-        .clang_arg("-IlibSTARK/libstark/src")
+        .clang_arg("-Ihome/ubuntu/zkMIPS/backend/algebra/algebralib/headers")    
+        .clang_arg("-Ihome/ubuntu/zkMIPS/backend/algebra/FFT/src")
+        .clang_arg("-Ihome/ubuntu/zkMIPS/backend/libstark/src")
         .whitelist_function("execute")          
         .derive_copy(false)
         .layout_tests(false)     
         .generate()
         .expect("Unable to generte bindings");
 
-    let out_path = PathBuf::from(env::var("OUT_DIR").unwrap());
+    let out_path = PathBuf::from("/home/ubuntu/zkp_L3_prover_L1_verifier/crypto/stark/src");
     
     bindings
         .write_to_file(out_path.join("bindings.rs"))        

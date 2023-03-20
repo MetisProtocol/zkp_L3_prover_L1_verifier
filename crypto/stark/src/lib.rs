@@ -127,8 +127,8 @@ use ::std::os::raw::c_int;
 use ::std::os::raw::c_uint;
 include!(concat!("/home/ubuntu/zkp_L3_prover_L1_verifier/crypto/stark/src", "/bindings.rs"));
 
-pub fn execute(assemblyFile: c_schar, primaryTapeFile: c_schar, auxTapeFile: c_schar, t: c_int, securityParameter: c_schar, prover: c_int, address: c_schar, port_number: c_uint, verbose: c_int, session: c_schar, macros_file: c_schar) {
+pub fn execute(assemblyFile: c_schar, primaryTapeFile: c_schar, auxTapeFile: c_schar, t: c_int, prover: c_int, address: c_schar, port_number: c_uint, verbose: c_int, session: c_schar, macros_file: c_schar) {
     unsafe {
-        root::execute(assemblyFile, primaryTapeFile, auxTapeFile, t, securityParameter, prover, address, port_number, verbose, session, macros_file);
+        root::execute(assemblyFile, primaryTapeFile, auxTapeFile, t, prover, address, port_number, verbose, session, macros_file);
     }
 }
