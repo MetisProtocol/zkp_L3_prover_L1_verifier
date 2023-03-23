@@ -17,7 +17,7 @@
 #include <map>
 #include <string>
 #include <cstdint>
-#include "RAM/RAMDefinitions.hpp"
+#include "RAMDefinitions.hpp"
 #include "common/Utils/ErrorHandling.hpp"
 #include <algorithm>
 #include <math.h>

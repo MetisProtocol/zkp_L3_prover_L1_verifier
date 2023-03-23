@@ -3,7 +3,7 @@
 #include "generalPurpose.hpp"
 #include <gadgetlib/gadget.hpp>
 #include <gadgetlib/infrastructure.hpp>
-#include "RAM/RAMInstance.hpp"
+#include "../../RAM/RAMInstance.hpp"
 
 
 using namespace gadgetlib;

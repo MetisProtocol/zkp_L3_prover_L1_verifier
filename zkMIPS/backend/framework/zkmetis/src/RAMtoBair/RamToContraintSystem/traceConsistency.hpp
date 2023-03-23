@@ -4,7 +4,7 @@
 #include <gadgetlib/gadget.hpp>
 #include <gadgetlib/protoboard.hpp>
 #include "generalPurpose.hpp"
-#include "RAM/RAMInstance.hpp"
+#include "../../RAM/RAMInstance.hpp"
 using gadgetlib::Gadget;
 using gadgetlib::ProtoboardPtr;
 

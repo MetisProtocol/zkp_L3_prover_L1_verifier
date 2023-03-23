@@ -8,9 +8,9 @@
 #include "mips_wrapper.hpp"
 
 #include <sys/stat.h>
-#include "executeProtocol.hpp"
-#include "argParser.hpp"
-#include "zkMipsParser.hpp"
+#include "../executeProtocol.hpp"
+#include "../argParser.hpp"
+#include "../zkMipsParser.hpp"
 #ifndef PRINT_HELPERS_HPP__
 #include <protocols/print_helpers.hpp>
 #endif
@@ -212,7 +212,7 @@ int main(int argc, char *argv[]) {
     cout << "Test Prover " << "\n"; 
     if (prover) {
          cout << "Prover:\nExecuting over the network simulation with assembly from '" + assemblyFile + "' over 2^" + to_string(executionLenLog) +"-1 steps, soundness error at most 2^-" +to_string(securityParameter)+", public inputs from '" << primaryTapeFile <<"' and private inputs from '"+auxTapeFile<<"'. Verifier is at " << address << ":" << port_number<< ".\n\n";
-        execute(asmFile, primaryTapeFile, auxTapeFile, executionLenLog, securityParameter, prover, address, port_number, verbose, session, macros_file);
+        execute(asmFile, primaryTapeFile, auxTapeFile, executionLenLog, prover, address, port_number, verbose, session, macros_file);
         cout << "Complete Prover \n";
     }
     if (!debug) std::remove(asmFile.c_str());

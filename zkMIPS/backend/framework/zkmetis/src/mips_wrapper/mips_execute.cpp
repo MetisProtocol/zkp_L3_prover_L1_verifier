@@ -2,7 +2,7 @@
 #include <fstream>
 #include <string>
 // #include <languages/Bair/BairWitnessChecker.hpp>
-#include "zkmetis-api.hpp"
+#include "../zkmetis-api.hpp"
 #include <protocols/protocol.hpp>
 #include "mips.hpp"
 #include "mips_wrapper.hpp"
@@ -26,7 +26,7 @@ inline bool file_exists(const string& name) {
 }
 
 // a, b: secret numbers of the initial values of a fibonacci sequence for some sequence length
-void execute(const string assemblyFile, const string primaryTapeFile, const string auxTapeFile, const size_t t, const size_t securityParameter, bool prover, const string& address, uint16_t port_number, bool verbose, const string& session, const string& macros_file) {
+void execute(const string assemblyFile, const string primaryTapeFile, const string auxTapeFile, const size_t t, bool prover, const string& address, uint16_t port_number, bool verbose, const string& session, const string& macros_file) {
     
     if (primaryTapeFile != "" && !file_exists(primaryTapeFile)) {
         std::cerr << "File " << primaryTapeFile << " does not exist.\n";

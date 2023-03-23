@@ -4,7 +4,7 @@
 #include <gadgetlib/gadget.hpp>
 #include <algebraLib/CircuitPolynomial.hpp>
 #include "generalPurpose.hpp"
-#include "RAM/RAMInstance.hpp"
+#include "../../RAM/RAMInstance.hpp"
 
 using namespace gadgetlib;
 

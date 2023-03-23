@@ -2,8 +2,8 @@
 #define _COMMON_CONSTRAINTSLIB2_CONSTRAINTSYSTEMTOBair_cs2Bair_HPP_
 
 #include "gadgetlib/common_use.hpp"
-#include "RAMtoBair/RamToContraintSystem/transitionFunction.hpp"
-#include "RAMtoBair/RamToContraintSystem/transitionFunction.hpp"
+#include "../../RAMtoBair/RamToContraintSystem/transitionFunction.hpp"
+#include "../../RAMtoBair/RamToContraintSystem/transitionFunction.hpp"
 #include <languages/Bair/ConstraintsSys.hpp>
 #include <languages/Bair/BairWitness.hpp>
 #include <languages/Bair/BairInstance.hpp>

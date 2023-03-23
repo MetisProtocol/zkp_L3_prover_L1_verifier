@@ -77,7 +77,7 @@ mod rational_equality;
 #[cfg(feature = "prover")]
 mod trace_table;
 // TODO: Have unconditional Debug trait on all types
-extern crate glob;
+// extern crate glob;
 // In no std mode, substitute no_std_compat
 #[cfg(not(feature = "std"))]
 #[cfg_attr(feature = "std", macro_use)]
@@ -122,12 +122,16 @@ mod tests {
 #[allow(non_camel_case_types)]
 #[allow(non_snake_case)]
 
+use crate::root::std::basic_string;
 use ::std::os::raw::c_schar;
 use ::std::os::raw::c_int;
 use ::std::os::raw::c_uint;
+use std::string::String;
+use std::primitive::u64;
+
 include!(concat!("/home/ubuntu/zkp_L3_prover_L1_verifier/crypto/stark/src", "/bindings.rs"));
 
-pub fn execute(assemblyFile: c_schar, primaryTapeFile: c_schar, auxTapeFile: c_schar, t: c_int, prover: c_int, address: c_schar, port_number: c_uint, verbose: c_int, session: c_schar, macros_file: c_schar) {
+pub fn execute(assemblyFile: basic_string, primaryTapeFile: basic_string<_CharT>, auxTapeFile: basic_string<_CharT>, t: u64, prover: u64, address: basic_string<_CharT>, port_number: u64, verbose: u64, session: basic_string<_CharT>, macros_file: basic_string<_CharT>) {
     unsafe {
         root::execute(assemblyFile, primaryTapeFile, auxTapeFile, t, prover, address, port_number, verbose, session, macros_file);
     }

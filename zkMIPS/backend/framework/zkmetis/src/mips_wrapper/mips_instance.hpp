@@ -11,7 +11,7 @@ namespace ACSP_FOR_MIPS{
 
     class Mips_CS : public libstark::ConstraintSys{
     public:
-        
+        Mips_CS(); 
     
     // the amount of inputs each polynomial expects
     size_t numVars() const{ return 2 * mips::NUMREGS; }

@@ -169,14 +169,14 @@ fn main() {
         .clang_arg(r"-xc++")
         .clang_arg(r"-std=c++11")
         .clang_arg("-Isrc")
-        .clang_arg("-Ihome/ubuntu/zkMIPS/backend/algebra/algebralib/headers")    
-        .clang_arg("-Ihome/ubuntu/zkMIPS/backend/algebra/FFT/src")
-        .clang_arg("-Ihome/ubuntu/zkMIPS/backend/libstark/src")
+        .clang_arg("-I/home/ubuntu/zkMIPS/backend/algebra/algebralib/headers/")    
+        .clang_arg("-I/home/ubuntu/zkMIPS/backend/algebra/FFT/src/")
+        .clang_arg("-I/home/ubuntu/zkMIPS/backend/libstark/src/")
         .whitelist_function("execute")          
         .derive_copy(false)
         .layout_tests(false)     
         .generate()
-        .expect("Unable to generte bindings");
+        .expect("Unable to generate bindings");
 
     let out_path = PathBuf::from("/home/ubuntu/zkp_L3_prover_L1_verifier/crypto/stark/src");
     

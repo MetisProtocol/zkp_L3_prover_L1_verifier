@@ -4,11 +4,11 @@
 #include <iostream>
 #include <string>
 #include <regex>
-#include "zkMipsParser.hpp"
-#include "executeProtocol.hpp"
+#include "../zkMipsParser.hpp"
+#include "../executeProtocol.hpp"
 #include "protocols/protocol.hpp"
-#include "RAMtoBair/ConstraintSystemToBair/cs2Bair.hpp"
-#include "RAMtoBair/RamToContraintSystem/ALU.hpp"
+#include "../RAMtoBair/ConstraintSystemToBair/cs2Bair.hpp"
+#include "../RAMtoBair/RamToContraintSystem/ALU.hpp"
 // #include <languages/Bair/BairInstance.hpp>
 // #include <languages/Bair/BairWitness.hpp>
 

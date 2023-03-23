@@ -89,5 +89,5 @@ class polyAdd_class : public PolynomialInterface {
         return res;
     }
 
-} // ACSP_FOR_MIPS namespace
+    } // ACSP_FOR_MIPS namespace
 } // simple_mips namespace
