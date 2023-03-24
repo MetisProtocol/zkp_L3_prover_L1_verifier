@@ -34,5 +34,5 @@ struct Opt {
 fn main() {
     let opt = Opt::from_args();
     let security_parameter: c_int = 60;    
-    zkp_stark::execute(opt.assemblyFile, opt.primaryTapeFile, opt.auxTapeFile, opt.t, opt.prover, opt.address, opt.port_number, opt.verbose, opt.session, opt.macros_file);    
+    zkp_stark::execute(opt.assemblyFile, opt.primaryTapeFile, opt.auxTapeFile, opt.t, opt.prover, opt.address, opt.port_number.try_into().unwrap(), opt.verbose, opt.session, opt.macros_file);    
 }
