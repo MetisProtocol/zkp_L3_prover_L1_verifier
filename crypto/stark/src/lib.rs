@@ -128,11 +128,15 @@ use ::std::os::raw::c_int;
 use ::std::os::raw::c_uint;
 use std::string::String;
 use std::primitive::u64;
+use std::primitive::u16;
+use std::ffi::CString;
+use std::ffi::c_uchar;
+ use crate::root::std::string;
 
 include!(concat!("/home/ubuntu/zkp_L3_prover_L1_verifier/crypto/stark/src", "/bindings.rs"));
 
-pub fn execute(assemblyFile: basic_string, primaryTapeFile: basic_string<_CharT>, auxTapeFile: basic_string<_CharT>, t: u64, prover: u64, address: basic_string<_CharT>, port_number: u64, verbose: u64, session: basic_string<_CharT>, macros_file: basic_string<_CharT>) {
+pub fn execute(assemblyFile: string, primaryTapeFile: string, auxTapeFile: string, t: u64, prover: bool, address: string, port_number: u16, verbose: bool, session: string, macros_file: string) {
     unsafe {
-        root::execute(assemblyFile, primaryTapeFile, auxTapeFile, t, prover, address, port_number, verbose, session, macros_file);
+        root::execute(assemblyFile, primaryTapeFile, auxTapeFile, t, prover, &address, port_number, verbose, &session, &macros_file);
     }
 }

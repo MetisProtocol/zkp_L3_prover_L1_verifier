@@ -10,7 +10,7 @@
 //#include "protocols/protocol.hpp"
 //#include "../RAMtoBair/ConstraintSystemToBair/cs2Bair.hpp"
 //#include "../RAMtoBair/RamToContraintSystem/ALU.hpp"
-
+//use std::ffi::CString;
 #ifdef __cplusplus
 extern "C" {
 #endif
