@@ -12,11 +12,11 @@ struct Opt {
     #[structopt(name = "Auxillary Tape")]
     auxTapeFile: c_schar,
     #[structopt(name = "Time Steps")]
-    t: c_int,
+    t: u64,
     #[structopt(name = "Security Parameter")]
     securityParameter: c_schar,
     #[structopt(name = "Prover")]
-    prover: c_int,
+    prover: bool,
     #[structopt(name = "Address")]
     address: c_schar,
     #[structopt(name = "Port Number")]

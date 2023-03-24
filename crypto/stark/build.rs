@@ -160,6 +160,8 @@ fn main() {
         .compile("mips");
 
     println!(" Hello Stark 3");     
+    println!("cargo:rustc-link-arg=-fopenmp");
+
 
     let bindings = bindgen::builder()        
         .header("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/framework/zkmetis/src/mips_wrapper/mips_wrapper.hpp")               

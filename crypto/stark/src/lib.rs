@@ -122,7 +122,7 @@ mod tests {
 #[allow(non_camel_case_types)]
 #[allow(non_snake_case)]
 
-use crate::root::std::basic_string;
+//use crate::root::std::basic_string;
 use ::std::os::raw::c_schar;
 use ::std::os::raw::c_int;
 use ::std::os::raw::c_uint;
@@ -131,12 +131,12 @@ use std::primitive::u64;
 use std::primitive::u16;
 use std::ffi::CString;
 use std::ffi::c_uchar;
- use crate::root::std::string;
-
+use crate::root::std::string;
+use std::convert::TryInto;
 include!(concat!("/home/ubuntu/zkp_L3_prover_L1_verifier/crypto/stark/src", "/bindings.rs"));
 
 pub fn execute(assemblyFile: string, primaryTapeFile: string, auxTapeFile: string, t: u64, prover: bool, address: string, port_number: u16, verbose: bool, session: string, macros_file: string) {
     unsafe {
-        root::execute(assemblyFile, primaryTapeFile, auxTapeFile, t, prover, &address, port_number, verbose, &session, &macros_file);
+        root::execute(assemblyFile, primaryTapeFile, auxTapeFile, t.try_into().unwrap(), prover, &address, port_number.into(), verbose, &session, &macros_file);
     }
 }
