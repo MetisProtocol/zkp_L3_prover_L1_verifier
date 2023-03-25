@@ -9,11 +9,11 @@ use std::env;
 use std::path::PathBuf;
 
 fn main() {    
-    let stark = glob("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/libstark/src/**/*.cpp").unwrap().map(|e| e.unwrap()).into_iter();
-    let algebralib = glob("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/algebra/algebralib/**/*.cpp").unwrap().map(|e| e.unwrap()).into_iter();
-    let FFT = glob("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/algebra/FFT/**/*.cpp").unwrap().map(|e| e.unwrap()).into_iter();    
-    let gadgetlib = glob("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/framework/gadgetlib/gadgetlib/*.cpp").unwrap().map(|e| e.unwrap()).into_iter();
-    let mips = glob("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/framework/zkmetis/src/**/*.cpp").unwrap().map(|e| e.unwrap()).into_iter();    
+    let stark = glob("backend/libstark/src/**/*.cpp").unwrap().map(|e| e.unwrap()).into_iter();
+    let algebralib = glob("backend/algebra/algebralib/**/*.cpp").unwrap().map(|e| e.unwrap()).into_iter();
+    let FFT = glob("backend/algebra/FFT/**/*.cpp").unwrap().map(|e| e.unwrap()).into_iter();    
+    let gadgetlib = glob("backend/framework/gadgetlib/gadgetlib/*.cpp").unwrap().map(|e| e.unwrap()).into_iter();
+    let mips = glob("backend/framework/zkmetis/src/**/*.cpp").unwrap().map(|e| e.unwrap()).into_iter();    
     print!(" Test Stark !");    
     cc::Build::new()
         .cpp(true)                
@@ -36,9 +36,9 @@ fn main() {
         .warnings(false)
         .extra_warnings(false)
         .files(stark)        
-        .include("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/algebra/algebralib/headers")
-        .include("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/algebra/FFT/src")
-        .include("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/libstark/src")    
+        .include("backend/algebra/algebralib/headers")
+        .include("backend/algebra/FFT/src")
+        .include("backend/libstark/src")    
         .compile("stark");
 
     print!(" Hello stark!");    
@@ -63,9 +63,9 @@ fn main() {
         .warnings(false)
         .extra_warnings(false)
         .files(algebralib)                
-        .include("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/algebra/algebralib/headers")
-        .include("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/algebra/FFT/src")
-        .include("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/libstark/src")    
+        .include("backend/algebra/algebralib/headers")
+        .include("backend/algebra/FFT/src")
+        .include("backend/libstark/src")    
         .compile("algebralib");
 
     print!(" Hello Stark 1!");
@@ -92,9 +92,9 @@ fn main() {
         .warnings(false)
         .extra_warnings(false)
         .files(FFT)        
-        .include("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/algebra/algebralib/headers")
-        .include("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/algebra/FFT/src")
-        .include("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/libstark/src")
+        .include("backend/algebra/algebralib/headers")
+        .include("backend/algebra/FFT/src")
+       .include("backend/libstark/src")
         .compile("FFT");
 
     print!(" Hello Stark 2!");
@@ -121,13 +121,13 @@ fn main() {
         .warnings(false)
         .extra_warnings(false)
         .files(gadgetlib)
-        .include("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/framework/gadgetlib")
-        .include("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/algebra/algebralib/headers")
-        .include("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/algebra/FFT")
-        .include("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/algebra/FFT/..")
-        .include("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/algebra/FFT/src")
-        .include("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/libstark/src")
-        .include("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/framework/gadgetlib/gadgetlib")  
+        .include("backend/framework/gadgetlib")
+        .include("backend/algebra/algebralib/headers")
+        .include("backend/algebra/FFT")
+        .include("backend/algebra/FFT/..")
+        .include("backend/algebra/FFT/src")
+        .include("backend/libstark/src")
+        .include("backend/framework/gadgetlib/gadgetlib")  
         .compile("gadgetlib");
 
     print!(" Hello Stark 4!");
@@ -153,27 +153,32 @@ fn main() {
         .warnings(false)
         .extra_warnings(false) 
         .files(mips)        
-        .include("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/algebra/algebralib/headers")
-        .include("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/algebra/FFT/src")
-        .include("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/libstark/src")
-        .include("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/framework/gadgetlib")
+        .include("backend/algebra/algebralib/headers")
+        .include("backend/algebra/FFT/src")
+        .include("backend/libstark/src")
+        .include("backend/framework/gadgetlib")
         .compile("mips");
 
     println!(" Hello Stark 3");     
     println!("cargo:rustc-link-arg=-fopenmp");
-    println!("cargo:rustc-flags="-L /home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/libstark/src"");
+    println!("cargo:rustc-link-lib=gomp");
+    let out_dir = "/home/ubuntu/zkp_L3_prover_L1_verifier/crypto/stark";
+    println!("cargo:rustc-link-search=native={}", out_dir); 
+ //  println!("cargo:rustc-link-lib=liblibstark.a");
+  //  println!("cargo:rustc-link-search=/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/bin/libstark"); 
+ //  println!("cargo:rustc-flags="-L /home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/libstark/src"");
     
     let bindings = bindgen::builder()        
-        .header("/home/ubuntu/zkp_L3_prover_L1_verifier/zkMIPS/backend/framework/zkmetis/src/mips_wrapper/mips_wrapper.hpp")               
+        .header("backend/framework/zkmetis/src/mips_wrapper/mips_wrapper.hpp")               
         .trust_clang_mangling(false)
         .rustfmt_bindings(true)      
         .enable_cxx_namespaces()
         .clang_arg(r"-xc++")
         .clang_arg(r"-std=c++11")
         .clang_arg("-Isrc")
-        .clang_arg("-I/home/ubuntu/zkMIPS/backend/algebra/algebralib/headers/")    
-        .clang_arg("-I/home/ubuntu/zkMIPS/backend/algebra/FFT/src/")
-        .clang_arg("-I/home/ubuntu/zkMIPS/backend/libstark/src/")
+        .clang_arg("-Ibackend/algebra/algebralib/headers/")    
+        .clang_arg("-Ibackend/algebra/FFT/src/")
+        .clang_arg("-Ibackend/libstark/src/")
         .whitelist_function("execute")          
         .derive_copy(false)
         .layout_tests(false)     
