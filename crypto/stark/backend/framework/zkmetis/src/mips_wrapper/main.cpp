@@ -98,28 +98,31 @@ void print_examples(const string exeName) {
     cout << exeName << " examples-zmips/knowledge_of_factorization.asm " << timesteps_prefix << " 10 " << security_prefix << " 120 " << private_tape_prefix << " ./examples-zmips/knowledge_of_factorization_auxtape.txt" << endl;
 }
 
+/*
 int main(int argc, char *argv[]) {
   
-   /* Parse arguments */
+   
     if (argc < 2){
         print_help(argv[0], "No input asm file given.");
         return EXIT_SUCCESS;
     }
     ArgParser args(argc, argv);
-    /* Print help message */
+    
     if (args.cmd_option_exists("-h") || args.cmd_option_exists(help_msg_prefix)) {
         print_help(argv[0], "");
         return EXIT_SUCCESS;
     }
-    /* Print usage examples */
-    if (args.cmd_option_exists("-e") || args.cmd_option_exists(examples_prefix)) {
+   
+     
+ if (args.cmd_option_exists("-e") || args.cmd_option_exists(examples_prefix)) {
         print_examples(argv[0]);
         return EXIT_SUCCESS;
     }
     const string executable(argv[0]);
     const string zkmetis("zkmetis");
     const string path = executable.substr(0, executable.size() - zkmetis.size());
-    /* Input zkMIPS file */
+
+   
     string assemblyFile = args.get_cmd_option(zkmips_file_prefix);
     if (!args.cmd_option_exists(zkmips_file_prefix) || !file_exists(assemblyFile) ) {
         print_help(argv[0], "No input asm file given. Use the " + zkmips_file_prefix + " flag and then provide the asm file.");
@@ -162,20 +165,20 @@ int main(int argc, char *argv[]) {
             std::cout << "No private tape file is given, using " << auxTapeFile << '\n';
         }
     }
-    /* Timesteps 2^t*/
+ 
     size_t executionLenLog = 5;
     bool tsteps_provided = false;
     if (args.cmd_option_exists(timesteps_prefix)) {
         executionLenLog = stol(args.get_cmd_option(timesteps_prefix));
         tsteps_provided = true;
     }
-    /* soundness error at most 2^(-sec) */
+   
     size_t securityParameter = 60;
     if (args.cmd_option_exists(security_prefix)) {
         securityParameter = stol(args.get_cmd_option(security_prefix));
     }
     bool no_proof = args.cmd_option_exists(no_proof_prefix);
-    /* Run prover and verifier separately */
+    
     bool prover = args.cmd_option_exists(run_prover_prefix);
     bool verifier = args.cmd_option_exists(run_verifier_prefix);
  //   const string executable(argv[0]);
@@ -193,7 +196,7 @@ int main(int argc, char *argv[]) {
     bool verbose = args.cmd_option_exists(verbose_prefix);
     bool show_asm = args.cmd_option_exists(show_asm_prefix);
     bool debug = args.cmd_option_exists(debug_prefix);
-    /* Parse address and port information */
+    
     string address = "localhost";
     uint16_t port_number = 1234;
     if (args.cmd_option_exists(address_port_prefix)) {
@@ -207,7 +210,7 @@ int main(int argc, char *argv[]) {
         session = args.get_cmd_option(session_prefix);
     }
     // printHeader();
-    /* assembly file can either be a ZK-MIPS file or a Zkmetis asm file */
+   
     string asmFile = parse_zkmips(assemblyFile, primaryTapeFile, path+"framework/zkmetis/src/macros.json", show_asm);
     cout << "Test Prover " << "\n"; 
     if (prover) {
@@ -229,4 +232,5 @@ int main(int argc, char *argv[]) {
     unsigned int securityParameter = 60
     return 0;
     */
-}
+// }
+
