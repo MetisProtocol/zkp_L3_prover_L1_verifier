@@ -162,6 +162,7 @@ fn main() {
     println!(" Hello Stark 3");     
     println!("cargo:rustc-link-arg=-fopenmp");
     println!("cargo:rustc-link-lib=gomp");
+    println!("cargo:rustc-link-lib=jsoncpp");
     let out_dir = "/home/ubuntu/zkp_L3_prover_L1_verifier/crypto/stark";
     println!("cargo:rustc-link-search=native={}", out_dir); 
  //  println!("cargo:rustc-link-lib=liblibstark.a");

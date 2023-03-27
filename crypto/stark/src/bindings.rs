@@ -93,7 +93,7 @@ pub mod root {
             pub bindgen_union_field:   u64,
             pub _phantom_0:            ::std::marker::PhantomData<::std::cell::UnsafeCell<_CharT>>,
         }
-        pub type string = root::std::basic_string<::std::os::raw::c_char>;
+        pub type string = ::std::os::raw::c_schar; // root::std::basic_string<::std::os::raw::c_char>;
         pub type integral_constant_value_type<_Tp> = _Tp;
         pub type integral_constant_type = u8;
         pub type true_type = u8;
