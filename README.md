@@ -16,6 +16,7 @@ This repo will maintain proof generation and verifier codes written in rust and 
 
 
 # Run Commands
+## cd ~/zkp_L3_prover_L1_verifier/crypto/stark
 
 ## cargo run --example wrapper --arguments having values for  : 
    ### Assembly File
