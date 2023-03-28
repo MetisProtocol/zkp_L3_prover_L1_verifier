@@ -15,3 +15,19 @@ This repo will maintain proof generation and verifier codes written in rust and 
 ## rustc --version
 
 
+# Run Commands
+
+cargo run --example wrapper --arguments having values for below : 
+    <Assembly File>
+    <Primary Tape>
+    <Auxillary Tape>
+    <Time Steps>
+    <Security Parameter>
+    <Prover>
+    <Address>
+    <Port Number>
+    <Verbose>
+    <Session>
+    <Macros File>
+
+
