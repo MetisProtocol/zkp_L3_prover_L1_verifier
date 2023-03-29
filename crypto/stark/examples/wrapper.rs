@@ -5,6 +5,7 @@ use ::std::os::raw::c_int;
 use ::std::os::raw::c_short;
 use std::convert::TryInto;
 use zkp_stark::root::std::string;
+//use cxx::CxxString;
 // use std::string;
 #[derive(StructOpt)]
 struct Opt {
@@ -38,4 +39,5 @@ fn main() {
     let opt = Opt::from_args();
     let security_parameter: c_int = 60;    
     zkp_stark::execute(opt.assemblyFile, opt.primaryTapeFile, opt.auxTapeFile, opt.t, opt.prover.try_into().unwrap(), opt.address, opt.port_number.try_into().unwrap(), opt.verbose, opt.session, opt.macros_file);    
+    println!("Test Param");
 }
