@@ -4,6 +4,7 @@ use crate::{
     polynomial::DensePolynomial,
     proof_of_work, Proof,
 };
+// extern crate zkp_stark;
 use log::trace;
 #[cfg(feature = "std")]
 use std::error;
@@ -14,6 +15,16 @@ use zkp_primefield::{
     fft, geometric_series::root_series, FieldElement, One, Pow, Root, SquareInline, Zero,
 };
 use zkp_u256::U256;
+use std::path::PathBuf;
+// use structopt::StructOpt;
+use ::std::os::raw::c_uint;
+use ::std::os::raw::c_schar;
+use ::std::os::raw::c_int;
+use ::std::os::raw::c_short;
+use std::convert::TryInto;
+//use zkp_stark;
+// use ::root::std::string;
+//use structopt::StructOpt;
 
 type Result<T> = std::result::Result<T, Error>;
 
@@ -74,7 +85,48 @@ impl From<MerkleError> for Error {
         Self::Merkle(err)
     }
 }
+/*
+#[derive(StructOpt)]
+struct Opt1 {
+    #[structopt(name = "Assembly File")]{
+    assemblyFile: string },
+    #[structopt(name = "Primary Tape")]
+    primaryTapeFile: string,
+    #[structopt(name = "Auxillary Tape")]
+    auxTapeFile: string,
+    #[structopt(name = "Time Steps")]
+    t: u64,
+    #[structopt(name = "Security Parameter")]
+    securityParameter: string,
+    #[structopt(name = "Prover", parse(try_from_str))]
+    prover: bool,
+    #[structopt(name = "Address")]
+    address: string,
+    #[structopt(name = "Port Number")]
+    port_number: c_uint,
+    #[structopt(name = "Verbose", parse(try_from_str))]
+    verbose: bool,
+    #[structopt(name = "Session")]
+    session: string,
+    #[structopt(name = "Macros File")]
+    macros_file: string
 
+}
+
+
+ #[test]
+ fn testcase() {
+//    let opt = Opt1::from_args();
+    let security_parameter: c_int = 60;
+    println!("Test Param 1");
+    //crate::root::execute("examples/read_test/read_test.mips", "examples/read_test/read_test.auxtape", "examples/read_test/read_test.pubtape", 5, true, "localhost:8080", 8081,true,"10", "backend/framework/zkmetis/src/macros.json");
+    unsafe {
+        crate::root::execute(5, true, 8081);
+    }
+    println!("Test Param");
+    assert_eq!(1,1);
+ }
+*/
 // False positives on the Latex math.
 #[allow(clippy::doc_markdown)]
 /// # Stark verify
@@ -533,7 +585,20 @@ mod tests {
         Provable, Verifiable,
     };
     use proptest::prelude::*;
-
+/* 
+#[test]
+ fn testcase() {
+//    let opt = Opt1::from_args();
+    let security_parameter: c_int = 60;
+    println!("Test Param 1");
+    //crate::root::execute("examples/read_test/read_test.mips", "examples/read_test/read_test.auxtape", "examples/read_test/read_test.pubtape", 5, true, "localhost:8080", 8081,true,"10", "backend/framewo>
+    unsafe {
+        crate::root::execute(5, true, 8081);
+    }
+    println!("Test Param");
+    assert_eq!(1,1);
+ }
+*/
     proptest!(
         #[test]
         fn verify_recurrance(r: Recurrance) {
@@ -557,4 +622,18 @@ mod tests {
             prop_assert!(verify(&constraints, &prove(&constraints, &trace).unwrap()).is_ok());
         }
     );
+    
+    #[test]
+ fn testcase() {
+//    let opt = Opt1::from_args();
+    let security_parameter: c_int = 60;
+    println!("Test Param 1");
+    //crate::root::execute("examples/read_test/read_test.mips", "examples/read_test/read_test.auxtape", "examples/read_test/read_test.pubtape", 5, true, "localhost:8080", 8081,true,"10", "backend/framewo>
+    unsafe {
+        crate::root::execute(5, true, 8081);
+    }
+    println!("Test Param");
+    assert_eq!(1,1);
+ }
+
 }

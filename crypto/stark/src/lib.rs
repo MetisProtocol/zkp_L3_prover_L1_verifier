@@ -61,7 +61,7 @@ mod solidity_seralizer;
 mod solidity_verifier;
 mod traits;
 mod verifier;
-
+//mod test/wrapper;
 // Optional prover functionality. Note that prover requires std.
 // TODO: Make it work without std.
 #[cfg(feature = "prover")]
@@ -131,12 +131,12 @@ use std::primitive::u64;
 use std::primitive::u16;
 use std::ffi::CString;
 use std::ffi::c_uchar;
-use crate::root::std::string;
+// use crate::root::std::string;
 use std::convert::TryInto;
 include!(concat!("/home/ubuntu/zkp_L3_prover_L1_verifier/crypto/stark/src", "/bindings.rs"));
 
-pub fn execute(assemblyFile: string, primaryTapeFile: string, auxTapeFile: string, t: u64, prover: bool, address: string, port_number: u16, verbose: bool, session: string, macros_file: string) {
+pub fn execute(t: u64, prover: bool, port_number: u16) {
     unsafe {
-        root::execute(assemblyFile, primaryTapeFile, auxTapeFile, t.try_into().unwrap(), prover, &address, port_number.into(), verbose, &session, &macros_file);
+        root::execute(t.try_into().unwrap(), prover, port_number.into());
     }
 }
