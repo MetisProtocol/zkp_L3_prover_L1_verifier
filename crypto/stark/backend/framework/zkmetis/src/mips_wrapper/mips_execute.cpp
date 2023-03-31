@@ -28,10 +28,10 @@ inline bool file_exists(const string& name) {
 // a, b: secret numbers of the initial values of a fibonacci sequence for some sequence length
 //void execute(const string assemblyFile, const string primaryTapeFile, const string auxTapeFile, const size_t t, bool prover, const string& address, uint16_t port_number, bool verbose, const string& session, const string& macros_file) 
 void execute(const size_t t, bool prover, uint16_t port_number) {
-    const string assemblyFile = "examples/read_test/read_test.mips";
-    const string primaryTapeFile = "examples/read_test/read_test.pubtape";
-    const string auxTapeFile = "examples/read_test/read_test.auxtape";
-    const string& address = "localhost:8081";
+    const string assemblyFile = "examples/add.mips";// "examples/read_test/read_test.mips";
+    const string primaryTapeFile = "";// "examples/read_test/read_test.pubtape";
+    const string auxTapeFile = "";//"examples/read_test/read_test.auxtape";
+    const string& address = "localhost:2324";
     bool verbose = true;
     const string& session = "10";
     const string& macros_file = "backend/framework/zkmetis/src/macros.json"; 
@@ -64,7 +64,7 @@ void execute(const size_t t, bool prover, uint16_t port_number) {
         return;
     }
     libstark::Protocols::executeProverProtocol(bairInstance, bairWitness, address, port_number, verbose, answer_, session);
-
+    std::cout << "\n Test Execute.\n";
   /*    
     libstark::BairInstance bair_instance = buildBairInstance(a, b);
     mips::evalp::setParams(1234);

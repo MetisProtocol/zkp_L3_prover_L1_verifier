@@ -83,6 +83,8 @@ void execute_locally(const string assemblyFile, const string auxTapeFile, const 
 }
 
 void execute_network(const string assemblyFile, const string auxTapeFile, const size_t t, const size_t securityParameter, bool prover, const string& address, uint16_t port_number, bool verbose, const string& session) {    
+    std::cout << "\nTest Start Protocol 0\n";
+
     //Initialize instance
     initRAMParamsFromEnvVariables();
     RAMProgram program(assemblyFile, REGISTERS_NUMBER, trRegisterLen);
@@ -101,4 +103,5 @@ void execute_network(const string assemblyFile, const string auxTapeFile, const 
     } else {
         libstark::Protocols::executeVerifierProtocol(bairInstance, securityParameter, port_number, verbose, assemblyFile, session);
     }
+    std::cout << "\nTest End Protocol 0\n";
 }

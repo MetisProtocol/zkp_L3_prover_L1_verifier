@@ -15,6 +15,8 @@ static void fillAddr(const string &address, unsigned short port, sockaddr_in &ad
     memset(&addr, 0, sizeof(addr));  // Zero out address structure
     addr.sin_family = AF_INET;       // Internet address
     
+    cout << "Address : " << address.c_str() << "Port "<< port;    
+
     hostent *host;  // Resolve name
     if ((host = gethostbyname(address.c_str())) == NULL) {
         perror("Failed to resolve name (gethostbyname())");
@@ -72,6 +74,7 @@ void Socket::setLocalPort(unsigned short localPort) {
 void Socket::setLocalAddressAndPort(const string &localAddress, unsigned short localPort) {
     // Get the address of the requested host
     sockaddr_in localAddr;
+    cout <<"Local Address" << localAddress  << "Port " << localPort << endl;
     fillAddr(localAddress, localPort, localAddr);
     
     if (bind(sockDesc, (sockaddr *) &localAddr, sizeof(sockaddr_in)) < 0) {

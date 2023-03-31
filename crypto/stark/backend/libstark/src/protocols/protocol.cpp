@@ -270,7 +270,7 @@ namespace Protocols{
         unique_ptr<AcspWitness> acspWitness (nullptr);
         if(!noWitness){
             if (verbose) {
-                std::cout<<"Constructing APR (ACSP) witness:";
+                std::cout<<"Constructing APR (ACSP) witness 2:";
             }
             bool doStatusLoop = true;
             Timer reductionTimer;
@@ -428,7 +428,7 @@ namespace Protocols{
         }
         unique_ptr<AcspWitness> acspWitness (nullptr);
         if (verbose) {
-            std::cout<<"Constructing APR (ACSP) witness:";
+            std::cout<<"Constructing APR (ACSP) witness 1:";
         }
         bool doStatusLoop = true;
         Timer reductionTimer;
@@ -447,12 +447,15 @@ namespace Protocols{
                 }
             }
         );
+        std::cout<<"ACSP Reduce Witness";
         acspWitness = CBairToAcsp::reduceWitness(instance, witness);
+        std::cout<<"ACSP Reduce Witness 1";
         doStatusLoop = false;
         barManager.join();
         if (verbose) {
             std::cout<<"("<<reductionTimer.getElapsed()<<" seconds)"<<std::endl;
         }
+        std::cout<<"ACSP Reduce Witness 2";
         using namespace Ali::Prover;
         const auto RS_prover = Biased_prover;
         prover_t pr(instance, *acspWitness, RS_prover);
@@ -460,6 +463,7 @@ namespace Protocols{
         double proverTime = 0, serializationTime = 0;
         
         /* Set up the socket */
+        std::cout<<"ACSP Reduce Witness address :" << address << port_number;
         TCPSocket sck(address, port_number);
         TCPSocket* sock = &sck;
         
