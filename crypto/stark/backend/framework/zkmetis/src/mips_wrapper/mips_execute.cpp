@@ -31,7 +31,7 @@ void execute(const size_t t, bool prover, uint16_t port_number) {
     const string assemblyFile = "examples/add.mips";// "examples/read_test/read_test.mips";
     const string primaryTapeFile = "";// "examples/read_test/read_test.pubtape";
     const string auxTapeFile = "";//"examples/read_test/read_test.auxtape";
-    const string& address = "localhost:2324";
+    const string& address = "localhost";
     bool verbose = true;
     const string& session = "10";
     const string& macros_file = "backend/framework/zkmetis/src/macros.json"; 
@@ -63,7 +63,8 @@ void execute(const size_t t, bool prover, uint16_t port_number) {
         std::cout << "\nTried for 2^15-1 timesteps and did not find answer.\n";
         return;
     }
-    libstark::Protocols::executeProverProtocol(bairInstance, bairWitness, address, port_number, verbose, answer_, session);
+//    libstark::Protocols::executeProverProtocol(bairInstance, bairWitness, address, port_number, verbose, answer_, session);
+    libstark::Protocols::executeProtocol(bairInstance, bairWitness, 120, false, false, true, verbose);  
     std::cout << "\n Test Execute.\n";
   /*    
     libstark::BairInstance bair_instance = buildBairInstance(a, b);

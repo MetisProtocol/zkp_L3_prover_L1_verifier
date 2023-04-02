@@ -451,6 +451,7 @@ namespace Protocols{
         acspWitness = CBairToAcsp::reduceWitness(instance, witness);
         std::cout<<"ACSP Reduce Witness 1";
         doStatusLoop = false;
+         std::cout<<"ACSP Reduce Witness address 1 :" << address << port_number;
         barManager.join();
         if (verbose) {
             std::cout<<"("<<reductionTimer.getElapsed()<<" seconds)"<<std::endl;

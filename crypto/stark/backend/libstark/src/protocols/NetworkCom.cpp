@@ -19,7 +19,8 @@ static void fillAddr(const string &address, unsigned short port, sockaddr_in &ad
 
     hostent *host;  // Resolve name
     if ((host = gethostbyname(address.c_str())) == NULL) {
-        perror("Failed to resolve name (gethostbyname())");
+//       perror(address.c_str()); 
+       perror("Failed to resolve name (gethostbyname())");
     }
     addr.sin_addr.s_addr = *((unsigned long *) host->h_addr_list[0]);
     addr.sin_port = htons(port);     // Assign port in network byte order
