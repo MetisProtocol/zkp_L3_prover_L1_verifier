@@ -1,0 +1,2 @@
+cargo:rustc-env=TYPENUM_BUILD_CONSTS=/home/ubuntu/zkp_L3_prover_L1_verifier/starkproof/target/debug/build/typenum-b95e556e6921e39d/out/consts.rs
+cargo:rustc-env=TYPENUM_BUILD_OP=/home/ubuntu/zkp_L3_prover_L1_verifier/starkproof/target/debug/build/typenum-b95e556e6921e39d/out/op.rs

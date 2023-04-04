@@ -6,9 +6,7 @@ repository = "https://github.com/0xProject/starkcrypto/tree/master/crypto/stark"
 keywords = ["zkp", "stark", "no-std", "wasm"]
 categories = ["cryptography", "algorithms", "no-std", "wasm"]
 authors = [
-    "Remco Bloemen <remco@0x.org>",
-    "Mason Liang <mason@0x.org>",
-    "Paul Vienhage <paul@0x.org>"]
+    "Shailesh <shai567@live.com>"]
 readme = "Readme.md"
 license = "Apache-2.0"
 edition = "2018"
@@ -32,6 +30,7 @@ zkp-merkle-tree = { version = "0.2.0", path = "../../crypto/merkle-tree", defaul
 zkp-mmap-vec = { version = "0.2.0", path = "../../utils/mmap-vec", default-features = false }
 zkp-primefield = { version = "0.2.0", path = "../../algebra/primefield", default-features = false }
 zkp-u256 = { version = "0.2.0", path = "../../algebra/u256", default-features = false }
+cxx = "1"
 
 [dev-dependencies]
 criterion = "0.3.0"
@@ -46,6 +45,13 @@ zkp-elliptic-curve-crypto = { version = "0.2.0", path = "../../crypto/elliptic-c
 zkp-logging-allocator = { version = "0.2.0", path = "../../utils/logging-allocator" }
 zkp-primefield = { version = "0.2.0", path = "../../algebra/primefield", features = ["proptest"] }
 zkp-u256 = { version = "0.2.0", path = "../../algebra/u256", features = ["proptest", "proptest-derive"] }
+
+[build-dependencies]
+cxx-build = "1"
+cc = "1.0"
+protoc-rust = "1.4"
+glob = "0.3"
+bindgen = "0.57"
 
 [[bench]]
 name = "benchmark"

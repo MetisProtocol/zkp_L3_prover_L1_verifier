@@ -31,7 +31,7 @@ fn main() {
 
     let data = extract_data_from_lines(&lines);
     let codes = extract_codes(&lines, &data);
-    let labels = get_addressed_labels(&lines, &codes);
+    let labels = "Test"; //get_addressed_labels(&lines, &codes);
     let texts = disassemble_instructions(&data, &labels, &codes);
 
     write_output(output_filepath, &data, &texts);
