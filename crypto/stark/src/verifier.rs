@@ -630,7 +630,8 @@ mod tests {
     println!("Test Param 1");
     //crate::root::execute("examples/read_test/read_test.mips", "examples/read_test/read_test.auxtape", "examples/read_test/read_test.pubtape", 5, true, "localhost:8080", 8081,true,"10", "backend/framewo>
     unsafe {
-        crate::root::execute(5, true, 1234);
+        let flag = crate::root::execute(5, true, 1234);
+        println!("Flag : {}",flag);
     }
     println!("Test Param");
     assert_eq!(1,1);
