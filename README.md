@@ -1,7 +1,7 @@
 # zkp_L3_prover_L1_verifier
 This repo will maintain proof generation and verifier codes written in rust and solidity
 
-
+# Most of the installations work for linux machines and mac machines which support apt-get.
 # Install following dependencies for C++
 
 ## sudo apt install g++
@@ -10,8 +10,13 @@ This repo will maintain proof generation and verifier codes written in rust and 
 ## sudo apt install libjsoncpp-dev
 ## sudo apt-get install libgtest-dev
 
-# In mac use this command for omp libraries
+# In mac : use this command for omp libraries and for g++ either install Xcode or the below gcc command using brew. 
 ## brew install libomp 
+## brew install gcc48
+## brew install openssl (Installation for ssl-dev)
+## brew install boost (Installation for libboost)
+## brew install jsoncpp (Installation for libjsoncpp)
+## brew install googletest (Installation for googletest)
 
 # Install Rust
 ## curl --proto '=https' --tlsv1.3 https://sh.rustup.rs -sSf | sh
