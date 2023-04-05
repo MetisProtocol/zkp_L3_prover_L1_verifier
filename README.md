@@ -10,7 +10,8 @@ This repo will maintain proof generation and verifier codes written in rust and 
 ## sudo apt install libjsoncpp-dev
 ## sudo apt-get install libgtest-dev
 
-# In mac install brew install libomp for omp libraries
+# In mac use this command for omp libraries
+## brew install libomp 
 
 # Install Rust
 ## curl --proto '=https' --tlsv1.3 https://sh.rustup.rs -sSf | sh
