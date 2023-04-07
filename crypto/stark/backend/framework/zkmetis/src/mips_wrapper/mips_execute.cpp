@@ -27,7 +27,7 @@ inline bool file_exists(const string& name) {
 
 // a, b: secret numbers of the initial values of a fibonacci sequence for some sequence length
 //void execute(const string assemblyFile, const string primaryTapeFile, const string auxTapeFile, const size_t t, bool prover, const string& address, uint16_t port_number, bool verbose, const string& session, const string& macros_file) 
-int execute(const size_t t, bool prover, uint16_t port_number) {
+int execute(const size_t t, bool prover, uint16_t port_number, const char *assembly) {
     const string assemblyFile = "examples/add.mips";// "examples/read_test/read_test.mips";
     const string primaryTapeFile = "";// "examples/read_test/read_test.pubtape";
     const string auxTapeFile = "";//"examples/read_test/read_test.auxtape";

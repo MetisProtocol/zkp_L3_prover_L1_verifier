@@ -21,7 +21,9 @@ use ::std::os::raw::c_uint;
 use ::std::os::raw::c_schar;
 use ::std::os::raw::c_int;
 use ::std::os::raw::c_short;
+use std::ffi::CString;
 use std::convert::TryInto;
+use std::os::raw::c_char;
 //use zkp_stark;
 // use ::root::std::string;
 //use structopt::StructOpt;
@@ -544,7 +546,8 @@ mod tests {
     println!("Test Param 1");
     //crate::root::execute("examples/read_test/read_test.mips", "examples/read_test/read_test.auxtape", "examples/read_test/read_test.pubtape", 5, true, "localhost:8080", 8081,true,"10", "backend/framewo>
     unsafe {
-        let flag = crate::root::execute(5, true, 1234);
+        let from_environment = CString::new("Rust").expect("CString::new failed");
+        let flag = crate::root::execute(5, true, 1234, from_environment.as_ptr());
         println!("Flag : {}",flag);
     }
     println!("Test Param");

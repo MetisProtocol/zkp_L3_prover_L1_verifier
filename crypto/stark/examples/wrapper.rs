@@ -3,6 +3,7 @@ use ::std::os::raw::c_uint;
 use ::std::os::raw::c_schar;
 use ::std::os::raw::c_int;
 use ::std::os::raw::c_short;
+use std::ffi::CString;
 use std::convert::TryInto;
 //use zkp_stark::root::std::string;
 //use cxx::CxxString;
@@ -41,7 +42,8 @@ fn main() {
     opt.prover = true;
     opt.port_number = 8081; 
     let security_parameter: c_int = 60;    
+    let from_environment = CString::new("Rust").expect("CString::new failed");
     println!("Test Param 1");
-    zkp_stark::execute(opt.t, opt.prover.try_into().unwrap(), opt.port_number.try_into().unwrap());    
+    zkp_stark::execute(opt.t, opt.prover.try_into().unwrap(), opt.port_number.try_into().unwrap(), from_environment.as_ptr());    
     println!("Test Param");
 }

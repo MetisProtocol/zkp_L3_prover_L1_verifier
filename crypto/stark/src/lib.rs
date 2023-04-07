@@ -99,7 +99,7 @@ pub use verifier::{verify, Error as VerifierError};
 pub use solidity_seralizer::proof_serialize;
 #[cfg(feature = "std")]
 pub use solidity_verifier::generate;
-
+use std::ffi::CString;
 // Exports for prover
 #[cfg(feature = "prover")]
 pub use constraint_check::check_constraints;
@@ -126,17 +126,20 @@ mod tests {
 use ::std::os::raw::c_schar;
 use ::std::os::raw::c_int;
 use ::std::os::raw::c_uint;
+use core::ffi::c_char;
 use std::string::String;
 use std::primitive::u64;
 use std::primitive::u16;
-use std::ffi::CString;
+//use std::ffi::CString;
 use std::ffi::c_uchar;
 // use crate::root::std::string;
 use std::convert::TryInto;
 include!(concat!("/home/ubuntu/zkp_L3_prover_L1_verifier/crypto/stark/src", "/bindings.rs"));
 
-pub fn execute(t: u64, prover: bool, port_number: u16) {
+//#[no_mangle]
+pub fn execute(t: u64, prover: bool, port_number: u16, assembly: *const c_char) {
     unsafe {
-        root::execute(t.try_into().unwrap(), prover, port_number.into());
+        let from_environment = CString::new("Rust").expect("CString::new failed");
+        root::execute(t.try_into().unwrap(), prover, port_number.into(), from_environment.as_ptr());
     }
 }

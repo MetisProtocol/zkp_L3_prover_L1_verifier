@@ -15,6 +15,11 @@ pub mod root {
     pub type size_t = ::std::os::raw::c_ulong;
     pub type __uint16_t = ::std::os::raw::c_ushort;
     extern "C" {
-        pub fn execute(t: root::size_t, prover: bool, port_number: u16) -> ::std::os::raw::c_int;
+        pub fn execute(
+            t: root::size_t,
+            prover: bool,
+            port_number: u16,
+            assembly: *const ::std::os::raw::c_char,
+        ) -> ::std::os::raw::c_int;
     }
 }
