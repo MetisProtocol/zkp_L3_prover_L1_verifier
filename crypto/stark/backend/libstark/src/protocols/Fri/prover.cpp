@@ -268,7 +268,9 @@ msg_ptr_t prover_t::sendMessage(){
 
 void prover_t::deleteProof(){
 #if __GNUG__
+   #ifdef __linux__
     state_ = common::state_t<std::unique_ptr<dataWithCommitment>>();
+   #endif
 #endif
 }
 

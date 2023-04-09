@@ -7,7 +7,9 @@
 
 #include <set>
 #if __GNUG__
-#include <sys/sysinfo.h>
+  #ifdef __linux__
+    #include <sys/sysinfo.h>
+  #endif 
 #endif
 
 namespace libstark{
@@ -166,11 +168,17 @@ namespace{
                 //compute RAM amount on current machine
                 {
 #if __GNUG__
+    #ifdef __linux__
                     struct sysinfo info;
                     sysinfo(&info);
                     logRAM = std::floor(Log2(info.totalram));
                     logVM = std::floor(Log2(info.totalswap + info.totalram));
                     logVM = std::min(logVM, logRAM); //it seems to be giving best performance
+   #else
+                   logRAM = 33;
+                   logVM = 33;
+                  
+   #endif  
 #else
                     logRAM = 33;
                     logVM = 33;
@@ -586,9 +594,14 @@ namespace{
             //compute RAM amount on current machine
             {
 #if __GNUG__
+   #ifdef __linux__
                 struct sysinfo info;
                 sysinfo(&info);
                 logRAM = Log2(std::round(info.totalram));
+
+   #else
+               logRAM = 33;  
+   #endif
 #else
                 logRAM = 33;
 #endif
