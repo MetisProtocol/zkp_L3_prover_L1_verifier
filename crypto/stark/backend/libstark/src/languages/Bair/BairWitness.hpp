@@ -70,14 +70,14 @@ public:
 	typedef std::unique_ptr<permutation_t> permutation_ptr;
 	
 	BairWitness(
-		assignment_ptr&& assignment,
+	        assignment_ptr&& assignment,
 		permutation_ptr&& permutation)
-	:
-		assignment_(std::move(assignment)),
-		permutation_(std::move(permutation)){};
+	:   
+		 assignment_(std::move(assignment)),
+		 permutation_(std::move(permutation)){};
 	
-	BairWitness(BairWitness&& src) = default;
-	BairWitness(const BairWitness& src) = delete;
+	 BairWitness(BairWitness&& src) = default;
+	// BairWitness(const BairWitness& src) = delete;
 
 	inline color_t get_color(size_t vecIndex)const {
 		return assignment_->getElementByIndex(vecIndex);

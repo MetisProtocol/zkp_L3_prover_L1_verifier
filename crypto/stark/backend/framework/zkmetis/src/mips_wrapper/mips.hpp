@@ -30,6 +30,10 @@ namespace mips {
 
     // FieldElement evalCPoly(const std::vector<FieldElement> & vars,
 	// 	const std::vector<FieldElement> & RootHash, const FieldElement& gN);
+    
+  //  struct BlobMetadata {
+        
+  //  };
 
     class evalp {
         public:

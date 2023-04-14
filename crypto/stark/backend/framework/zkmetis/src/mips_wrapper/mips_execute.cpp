@@ -4,12 +4,12 @@
 // #include <languages/Bair/BairWitnessChecker.hpp>
 #include "../zkmetis-api.hpp"
 #include <protocols/protocol.hpp>
-#include "mips.hpp"
+// #include "mips.hpp"
 #include "mips_wrapper.hpp"
 #include <sys/stat.h>
 
-using namespace simple_mips;
-using namespace simple_mips::ACSP_FOR_MIPS;
+// using namespace simple_mips;
+// using namespace simple_mips::ACSP_FOR_MIPS;
 using namespace libstark;
 
 using std::cout;
@@ -24,10 +24,15 @@ inline bool file_exists(const string& name) {
     struct stat buffer;
     return (stat (name.c_str(), &buffer) == 0);
 }
-
+/*
+struct BlobMetadata {
+        
+    };
+*/
 // a, b: secret numbers of the initial values of a fibonacci sequence for some sequence length
 //void execute(const string assemblyFile, const string primaryTapeFile, const string auxTapeFile, const size_t t, bool prover, const string& address, uint16_t port_number, bool verbose, const string& session, const string& macros_file) 
-int execute(const size_t t, bool prover, uint16_t port_number, const char *assembly) {
+// int execute(const size_t t, bool prover, uint16_t port_number, const char *assembly) {
+  BlobMetadata execute(const size_t t, bool prover, uint16_t port_number, const char *assembly) {   
     const string assemblyFile = "examples/add.mips";// "examples/read_test/read_test.mips";
     const string primaryTapeFile = "";// "examples/read_test/read_test.pubtape";
     const string auxTapeFile = "";//"examples/read_test/read_test.auxtape";
@@ -35,6 +40,8 @@ int execute(const size_t t, bool prover, uint16_t port_number, const char *assem
     bool verbose = true;
     const string& session = "10";
     const string& macros_file = "backend/framework/zkmetis/src/macros.json"; 
+    BlobMetadata metadata{};
+  //  empty_CS empty{};
     std::cerr << " Test does not exist.\n";
     if (primaryTapeFile != "" && !file_exists(primaryTapeFile)) {
         std::cerr << "File " << primaryTapeFile << " does not exist.\n";
@@ -59,15 +66,18 @@ int execute(const size_t t, bool prover, uint16_t port_number, const char *assem
     string private_inputs((std::istreambuf_iterator<char>(auxtapefs)),std::istreambuf_iterator<char>());
     sregex_token_iterator pr_it{private_inputs.begin(), private_inputs.end(), regex, -1};
     vector<string> private_lines{pr_it, {}};
+    metadata.age = 1;
     const auto bairWitness = constructWitness(program, t, private_lines);     // witness is generated from the prover
     if (!found_answer_) {
         std::cout << "\nTried for 2^15-1 timesteps and did not find answer.\n";
-        return 1;
+      //  return 1;
+        return metadata; 
     }
 //    libstark::Protocols::executeProverProtocol(bairInstance, bairWitness, address, port_number, verbose, answer_, session);
-    libstark::Protocols::executeProtocol(bairInstance, bairWitness, 120, false, false, true, verbose);  
+   // libstark::Protocols::executeProtocol(bairInstance, bairWitness, 120, false, false, true, verbose);  
     std::cout << "\n Test Execute.\n";
-    return 1;
+   // return 1;
+    return metadata; 
     
  /*    
     libstark::BairInstance bair_instance = buildBairInstance(a, b);

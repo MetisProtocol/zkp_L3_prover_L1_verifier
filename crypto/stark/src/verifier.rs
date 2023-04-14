@@ -548,7 +548,7 @@ mod tests {
     unsafe {
         let from_environment = CString::new("Rust").expect("CString::new failed");
         let flag = crate::root::execute(5, true, 1234, from_environment.as_ptr());
-        println!("Flag : {}",flag);
+        println!("Flag : {}",flag.age);
     }
     println!("Test Param");
     assert_eq!(1,1);

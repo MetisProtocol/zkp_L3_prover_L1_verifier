@@ -10,6 +10,8 @@ libstark::BairInstance constructInstance(const RAMProgram& prog, const size_t t)
     unique_ptr<cs2BairConstraints> cs2bairConstraints_(new cs2BairConstraints(cs2bair_instance));
     unique_ptr<cs2BairMemoryCS> cs2bairMemoryCS_(new cs2BairMemoryCS(cs2bair_instance));
     size_t numVars = (cs2bairConstraints_->numVars() / 2);
+//    cs2bairMemoryCS_->.constraints();
+//    cs2bairMemoryCS_->numVars();
     return libstark::BairInstance(numVars, t, move(cs2bairConstraints_), move(cs2bairMemoryCS_), cs2bair_instance.getBoundaryConstraints(), vector<Algebra::FieldElement>(numVars,Algebra::zero()));
 }
 

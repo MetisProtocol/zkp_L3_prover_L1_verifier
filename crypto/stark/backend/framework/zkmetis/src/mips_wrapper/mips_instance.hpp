@@ -9,6 +9,10 @@ using namespace libstark;
 namespace simple_mips{
 namespace ACSP_FOR_MIPS{
 
+//    struct BlobMetadata {
+  //      size: usize,
+  //      tags: Vec<String>,
+  //  }
     class Mips_CS : public libstark::ConstraintSys{
     public:
         Mips_CS(); 

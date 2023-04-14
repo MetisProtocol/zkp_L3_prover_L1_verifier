@@ -8,6 +8,12 @@ namespace{
 
 using std::vector;
 
+//struct BlobMetadata {
+  //      size: usize,
+  //      tags: Vec<String>,
+ //   }
+
+
 class empty_CS : public libstark::ConstraintSys{
     public:
 
