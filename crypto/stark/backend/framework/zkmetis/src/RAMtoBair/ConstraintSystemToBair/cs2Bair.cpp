@@ -1,5 +1,6 @@
 #include "cs2Bair.hpp"
 #include <iostream>
+#include <string>
 #include "../RamToContraintSystem/MemoryConsraints.hpp"
 
 using libstark::BairInstance;
@@ -53,6 +54,7 @@ cs2Bair::cs2Bair(ProtoboardPtr pb, const RAMProgram& program, const int transcri
             std::cout << "\nCs2 Bair 4 \n";
             generateMemoryWitness();
         }
+     this->getWitness(); 
 }
 
 void cs2Bair::init() {
@@ -209,10 +211,11 @@ VariableAssignment cs2Bair::vectorToAssignment(const std::vector<Algebra::FieldE
 }
 
 //#define falseWitness//checking how good PCP is at finding small errors
-// #define printTrace //print the execution trace (i.e. witness) while generating it
+ #define printTrace //print the execution trace (i.e. witness) while generating it
 void cs2Bair::generateWitness() {
 	//const size_t transcript_len = POW2(TRANSCIPT_LEN_LOG) - 1;
 	// First Assignment should be zero
+    string witness; 
     initInitialVars();
 #ifdef printTrace
 	set<Algebra::Variable, Variable::VariableStrictOrder> usedVars;
@@ -255,10 +258,16 @@ void cs2Bair::generateWitness() {
 #ifdef printTrace
 
 	cout << "non-zero-constant vars in trace:" << endl;
-	for (auto j : usedVars)
-		cout << j.name() << " " <<endl;
+	for (auto j : usedVars) {
+	        witness = witness + " " + j.name(); 
+        	cout << j.name() << " " <<endl;
+        }
 	cout << "total:" << usedVars.size();
+        witness_ = witness; 
+       // witness = witness + "total: ";  
+         
 #endif
+       std:cout << "\nWitness" << witness << endl;
        std::cout << "\nPointer 07 \n";
 }
 

@@ -72,12 +72,12 @@ std = [
     "serde",
     "thiserror",
     "tinytemplate",
-    "zkp-hash/std",
-    "zkp-macros-decl/std",
-    "zkp-merkle-tree/std",
-    "zkp-mmap-vec/std",
-    "zkp-primefield/std",
-    "zkp-u256/std",
+#    "zkp-hash/std",
+#    "zkp-macros-decl/std",
+#    "zkp-merkle-tree/std",
+#    "zkp-mmap-vec/std",
+#    "zkp-primefield/std",
+#    "zkp-u256/std",
 ]
 inline = [
     "zkp-primefield/inline",
@@ -92,3 +92,6 @@ prover = [
 # Allow math in docs
 [package.metadata.docs.rs]
 rustdoc-args = ["--html-in-header", ".cargo/katex-header.html"]
+
+[profile.release]
+codegen-units=1

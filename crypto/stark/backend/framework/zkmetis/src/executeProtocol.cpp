@@ -1,5 +1,5 @@
 #include "executeProtocol.hpp"
-
+#include <string>
 libstark::BairInstance constructInstance(const RAMProgram& prog, const size_t t){
     resetALU_GadgetGlobalState();
     shared_ptr<const RAMProtoboardParams> archParams_(make_shared<const RAMProtoboardParams>(prog.archParams().numRegisters, trRegisterLen, trOpcodeLen, 16, 1));
@@ -22,12 +22,30 @@ libstark::BairWitness constructWitness(const RAMProgram& prog, const size_t t, c
     gadgetlib::ProtoboardPtr pb_witness = Protoboard::create(archParams_);
     std::cout << "\n Witness 2 \n";
     cs2Bair cs2bair_witness(pb_witness, prog, int(gadgetlib::POW2(t) - 1), true, private_lines);
-    std::cout << "\n Witness 3 \n";
+    string witn = cs2bair_witness.getWitness();
+    std::cout << "\n Witness 3 \n" << witn;
     unique_ptr<cs2BairColoring> cs2bairColoring_(new cs2BairColoring(cs2bair_witness));
     std::cout << "\n Witness 4 \n"; 
     unique_ptr<cs2BairMemory> cs2bairMemory_(new cs2BairMemory(cs2bair_witness));
     std::cout << "\n Witness 5 \n";
     return libstark::BairWitness(move(cs2bairColoring_), move(cs2bairMemory_));
+}
+
+
+string constructWitnessZk(const RAMProgram& prog, const size_t t, const vector<string>& private_lines){
+    resetALU_GadgetGlobalState();
+    shared_ptr<const RAMProtoboardParams> archParams_(make_shared<const RAMProtoboardParams>(prog.archParams().numRegisters, trRegisterLen, trOpcodeLen, 16, 1));
+    std::cout << "\n Witness 1 \n";
+    gadgetlib::ProtoboardPtr pb_witness = Protoboard::create(archParams_);
+    std::cout << "\n Witness 2 \n";
+    cs2Bair cs2bair_witness(pb_witness, prog, int(gadgetlib::POW2(t) - 1), true, private_lines);
+    string witn = cs2bair_witness.getWitness();
+    std::cout << "\n Witness 3 \n" << witn;
+ //   unique_ptr<cs2BairColoring> cs2bairColoring_(new cs2BairColoring(cs2bair_witness));
+ //   std::cout << "\n Witness 4 \n"; 
+ //   unique_ptr<cs2BairMemory> cs2bairMemory_(new cs2BairMemory(cs2bair_witness));
+ //   std::cout << "\n Witness 5 \n";
+    return witn; // libstark::BairWitness(move(cs2bairColoring_), move(cs2bairMemory_));
 }
 
 void execute_locally(const string assemblyFile, const string auxTapeFile, const size_t t, const size_t securityParameter, bool verbose, bool no_proof, bool tsteps_provided) {

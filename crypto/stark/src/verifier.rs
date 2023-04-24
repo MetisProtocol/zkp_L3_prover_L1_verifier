@@ -539,16 +539,18 @@ mod tests {
         }
     );
     
+
     #[test]
  fn testcase() {
 //    let opt = Opt1::from_args();
-    let security_parameter: c_int = 60;
+//    let security_parameter: c_int = 60;
     println!("Test Param 1");
     //crate::root::execute("examples/read_test/read_test.mips", "examples/read_test/read_test.auxtape", "examples/read_test/read_test.pubtape", 5, true, "localhost:8080", 8081,true,"10", "backend/framewo>
-    unsafe {
+ 
+   unsafe {
         let from_environment = CString::new("Rust").expect("CString::new failed");
-        let flag = crate::root::execute(5, true, 1234, from_environment.as_ptr());
-        println!("Flag : {}",flag.age);
+        let blob = crate::root::execute(5, true, 1234, from_environment.as_ptr());
+        println!("Flag : {}",blob.age);
     }
     println!("Test Param");
     assert_eq!(1,1);

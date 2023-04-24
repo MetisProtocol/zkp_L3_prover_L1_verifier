@@ -175,7 +175,7 @@ fn main() {
         .rustfmt_bindings(true)      
         .enable_cxx_namespaces()
         .clang_arg(r"-xc++")
-        .clang_arg(r"-std=c++11")
+        .clang_arg(r"-std=c++17")
         .clang_arg("-Isrc")
         .clang_arg("-Ibackend/algebra/algebralib/headers/")    
         .clang_arg("-Ibackend/algebra/FFT/src/")

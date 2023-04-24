@@ -7,6 +7,10 @@ pub mod root {
     pub mod std {
         #[allow(unused_imports)]
         use self::super::super::root;
+        pub mod __detail {
+            #[allow(unused_imports)]
+            use self::super::super::super::root;
+        }
     }
     pub mod __gnu_cxx {
         #[allow(unused_imports)]
@@ -17,7 +21,8 @@ pub mod root {
     #[repr(C)]
     #[derive(Debug)]
     pub struct BlobMetadata {
-        pub age: ::std::os::raw::c_int,
+        pub age:     ::std::os::raw::c_int,
+        pub witness: *mut ::std::os::raw::c_char,
     }
     extern "C" {
         pub fn execute(

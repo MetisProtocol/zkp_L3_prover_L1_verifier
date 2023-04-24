@@ -7,7 +7,7 @@
 #include <languages/Bair/ConstraintsSys.hpp>
 #include <languages/Bair/BairWitness.hpp>
 #include <languages/Bair/BairInstance.hpp>
-
+#include <string>
 
 
 
@@ -43,7 +43,7 @@ private:
     
 	std::vector<std::vector<Algebra::FieldElement>> traceAssignmentTable_;
     std::map<size_t,size_t> memoryPermutation_;
-
+        string witness_;
 	// Help Functions
 	void initInitialVars();
 	void checkMemoryUse();
@@ -76,6 +76,7 @@ public:
 	std::vector<Variable> getTranslationVector() const { return pb_->getTranslationVector(); }
 	const std::map<size_t, size_t>& getMemoryPermutation()const { return memoryPermutation_; }
 	size_t varsAmount() const; // Number of Variables in one traceLine
+        string getWitness() { return witness_;  } 
     libstark::BairInstance::boundaryConstraints_t getBoundaryConstraints() const; 
 }; // cs2Bair
 

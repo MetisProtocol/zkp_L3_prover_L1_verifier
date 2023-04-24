@@ -7,7 +7,7 @@
 //#include "../
 //#include "mips.hpp"
 //#include <regex>
-// #include "../zkMipsParser.hpp"
+//#include "../zkMipsParser.hpp"
 //#include "../executeProtocol.hpp"
 //#include "protocols/protocol.hpp"
 //#include "../RAMtoBair/ConstraintSystemToBair/cs2Bair.hpp"
@@ -16,14 +16,12 @@
 //using namespace simple_mips::ACSP_FOR_MIPS;
 // using namespace libstark;
 #ifdef __cplusplus
-extern "C" {
+extern "C++" {
 #endif
 //template <libstark::BairWitness::permutation_t permutation_t>
 struct BlobMetadata {
        int age;        
-       char* witness;
-    //   std::string witness;
-   //    std::unique_ptr<cs2BairConstraints> witness;
+       libstark::BairWitness::permutation_ptr witness;
      //  permutation_t;
      //  libstark::Sequence<permutation_t> permutation_ptr;
     };

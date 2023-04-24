@@ -140,6 +140,6 @@ include!(concat!("/home/ubuntu/zkp_L3_prover_L1_verifier/crypto/stark/src", "/bi
 pub fn execute(t: u64, prover: bool, port_number: u16, assembly: *const c_char) {
     unsafe {
         let from_environment = CString::new("Rust").expect("CString::new failed");
-        root::execute(t.try_into().unwrap(), prover, port_number.into(), from_environment.as_ptr());
+        let result = root::execute(t.try_into().unwrap(), prover, port_number.into(), from_environment.as_ptr());
     }
 }
