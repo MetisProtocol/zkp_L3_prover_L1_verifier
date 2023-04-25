@@ -22,6 +22,7 @@ use ::std::os::raw::c_schar;
 use ::std::os::raw::c_int;
 use ::std::os::raw::c_short;
 use std::ffi::CString;
+use std::ffi::CStr;
 use std::convert::TryInto;
 use std::os::raw::c_char;
 //use zkp_stark;
@@ -551,6 +552,14 @@ mod tests {
         let from_environment = CString::new("Rust").expect("CString::new failed");
         let blob = crate::root::execute(5, true, 1234, from_environment.as_ptr());
         println!("Flag : {}",blob.age);
+        let c_str = CStr::from_ptr(blob.witness);
+        let rust_str = c_str.to_str().expect("Bad encoding");
+    // calling libc::free(ptr as *mut _); causes use after free vulnerability
+        println!("1. Printed from rust: {}", rust_str);
+        let owned = rust_str.to_owned();
+    // calling libc::free(ptr as *mut _); does not cause after free vulnerability
+        println!("2. Printed from rust: {}", owned);
+       // println!("Flag 1: {:#?}",blob.witness);
     }
     println!("Test Param");
     assert_eq!(1,1);
