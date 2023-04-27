@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-// #include <languages/Bair/BairWitnessChecker.hpp>
+#include <languages/Bair/BairWitnessChecker.hpp>
 #include "../zkmetis-api.hpp"
 #include <protocols/protocol.hpp>
 // #include "mips.hpp"
@@ -68,11 +68,13 @@ struct BlobMetadata {
     sregex_token_iterator pr_it{private_inputs.begin(), private_inputs.end(), regex, -1};
     vector<string> private_lines{pr_it, {}};
     metadata.age = 1;
-   
+    const auto bairWitness = constructWitness(program, t, private_lines);    
     const string witness = constructWitnessZk(program, t, private_lines);     // witness is generated from the prover
     char * witness2 = new char [witness.length()+1];
     strcpy (witness2, witness.c_str());
-    
+    if(!BairWitnessChecker::verify(bairInstance, bairWitness)){
+           return metadata;
+    } 
     metadata.witness = witness2;
     if (!found_answer_) {
         std::cout << "\nTried for 2^15-1 timesteps and did not find answer.\n";
